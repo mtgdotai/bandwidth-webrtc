@@ -186,10 +186,5 @@ var info = call.getInfo();
 * Chrome
 * Opera
 
-##Things SIPml5 does NOT do (that sip.js does)
-* Choose input devices
-* decline/accept call before getUserMedia is accepted
-* mute/unmute microphone
-
 
 
