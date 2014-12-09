@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - '0.10'
+branches:
+  only:
+    - master
+notifications:
+  hipchat:
+    rooms:
+      - 1ac30153f58fc1a1f21b241f59919f@1040022
+    template:
+      - '%{repository}#%{build_number} (%{branch} - %{commit_message} : %{author}): %{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change view</a>)'
+    format: html
