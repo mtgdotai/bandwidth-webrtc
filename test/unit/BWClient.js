@@ -1,9 +1,9 @@
 "use strict";
 require("../../lib/BWClient");
-var assert = require("assert");
+var expect = require("chai").expect;
 
 describe("The Bandwidth WebRTC client", function () {
 	it("should declare BWClient as a global",function () {
-		assert(typeof BWClient !== undefined);
+		expect(global.BWClient).to.not.equal(undefined);
 	});
 });
