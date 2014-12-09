@@ -2,7 +2,7 @@
 BWClient is a global singleton used to access the Bandwidth WebRTC Client functionality.
 ##Api
 ###createPhone(config) [static]
-A phone is needed to make/receive calls. Each phone is associated with a single number/identity. To create a phone, create a configuration object and pass it to *BWClient.createPhone()*. This returns a BWPhone object, or throws an exception is the configuration is invalid.
+A phone is needed to make/receive calls. Each phone is associated with a single number/identity. To create a phone, create a configuration object and pass it to *BWClient.createPhone()*. This returns a BWPhone object, or throws an exception if the configuration is invalid.
 
 **Parameters**
 

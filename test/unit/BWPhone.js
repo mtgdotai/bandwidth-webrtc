@@ -1,8 +1,6 @@
 "use strict";
 var BWPhone = require("../../lib/BWPhone");
 var expect = require("chai").expect;
-//var sinon = require("sinon");
-//var SIP = require("sip.js");
 
 describe("BWPhone", function () {
 	var validConfig = {
