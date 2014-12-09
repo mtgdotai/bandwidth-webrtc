@@ -18,9 +18,6 @@ It currently only supports SIP for WebRTC signaling.
     //mandatory: domain name
     domain: "prod.domain.com",
     
-    //optional: websocket proxy
-    websocket_proxy_url: "wss://1.2.3.4:5060",
-    
     //optional: password to authenticate the SIP user
     password: "taco123",
 }
@@ -37,7 +34,6 @@ A BWPhone instance
 var bwPhone = BWClient.createPhone({
     username: "user_123",
     domain: "prod.domain.com",
-    websocket_proxy_url: "wss://1.2.3.4:5060",
     password: "taco123",
 });
 ```

@@ -22,14 +22,6 @@ describe("BWPhone", function () {
 		}
 		expect(test).to.throw(Error,"username is required");
 	});
-	it("constructor should require websocketProxyUrl",function () {
-		var config = JSON.parse(JSON.stringify(validConfig));
-		delete config.websocketProxyUrl;
-		function test(){
-			return new BWPhone(config);
-		}
-		expect(test).to.throw(Error,"websocketProxyUrl is required");
-	});
 	it("constructor should require domain",function () {
 		var config = JSON.parse(JSON.stringify(validConfig));
 		delete config.domain;
