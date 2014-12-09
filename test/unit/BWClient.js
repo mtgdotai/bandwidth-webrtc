@@ -1,1 +1,1 @@
-require('../../lib/BWClient');
+require("../../lib/BWClient");
