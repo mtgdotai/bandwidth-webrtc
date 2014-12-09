@@ -1,4 +1,5 @@
 #Bandwidth WebRTC Client
+[![Build Status](https://magnum.travis-ci.com/inetCatapult/webrtc-client.svg?token=BQBnkCKjpv5Ls9SpJgzy&branch=master)](https://magnum.travis-ci.com/inetCatapult/webrtc-client)
 
 ##Getting Started
 The client is contained in a single javascript file and has no other dependencies. There is a single global object, "BWClient" that is used the access the api.
