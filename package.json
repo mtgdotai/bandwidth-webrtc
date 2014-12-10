@@ -22,11 +22,12 @@
     "grunt-jscs": "^1.0.0",
     "grunt-mocha-istanbul": "^2.2.0",
     "istanbul": "^0.3.4",
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "sinon": "^1.12.1"
   },
   "dependencies": {
     "event-emitter": "^0.3.1",
-    "sinon": "^1.12.1",
+    "joi": "^5.0.2",
     "sip.js": "^0.6.4"
   }
 }

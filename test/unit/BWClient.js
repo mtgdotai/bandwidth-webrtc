@@ -8,15 +8,23 @@ describe("BWClient", function () {
 	it("should declare BWClient as a global",function () {
 		expect(global.BWClient).to.not.equal(undefined);
 	});
-	it(".createPhone() should call BWPhone constructor",function () {
-		sinon.stub(SIP,"UA",function () {});
-		var validConfig = {
-			username          : "nathan",
-			websocketProxyUrl : "ws://myAwesomeProxy.com",
-			domain            : "domain.com"
-		};
-		var phone = global.BWClient.createPhone(validConfig);
-		expect(phone.constructor.name).to.equal("BWPhone");
-		SIP.UA.restore();
+	describe(".createPhone()",function () {
+		var validConfig;
+		var phone;
+		before(function () {
+			sinon.stub(SIP,"UA",function () {});
+			validConfig = {
+				username : "nathan",
+				domain   : "domain.com",
+				password : "taco123"
+			};
+			phone = global.BWClient.createPhone(validConfig);
+		});
+		after(function () {
+			SIP.UA.restore();
+		});
+		it("should call BWPhone constructor",function () {
+			expect(phone.constructor.name).to.equal("BWPhone");
+		});
 	});
 });

@@ -3,31 +3,51 @@ var BWPhone = require("../../lib/BWPhone");
 var expect = require("chai").expect;
 
 describe("BWPhone", function () {
-	var validConfig = {
-		websocketProxyUrl : "ws://myAwesomeProxy.com",
-		domain            : "domain.com",
-		username          : "nathan"
-	};
-	it("constructor should require config object",function () {
-		function test(){
-			return new BWPhone(undefined);
-		}
-		expect(test).to.throw(Error,"configuration object is required");
+	var validConfig;
+	before(function () {
+		validConfig = {
+			websocketProxyUrl : "ws://myAwesomeProxy.com",
+			domain            : "domain.com",
+			username          : "nathan"
+		};
 	});
-	it("constructor should require username",function () {
-		var config = JSON.parse(JSON.stringify(validConfig));
-		delete config.username;
-		function test(){
-			return new BWPhone(config);
-		}
-		expect(test).to.throw(Error,"username is required");
+	describe("constructor called with missing config",function () {
+		var func;
+		before(function () {
+			func = function () {
+				return new BWPhone(undefined);
+			};
+		});
+		it("throws an error",function () {
+			expect(func).to.throw(Error);
+		});
 	});
-	it("constructor should require domain",function () {
-		var config = JSON.parse(JSON.stringify(validConfig));
-		delete config.domain;
-		function test(){
-			return new BWPhone(config);
-		}
-		expect(test).to.throw(Error,"domain is required");
+	describe("constructor called with config with missing username",function () {
+		var func;
+		var config;
+		before(function () {
+			config = JSON.parse(JSON.stringify(validConfig));
+			delete config.username;
+			func = function () {
+				return new BWPhone(config);
+			};
+		});
+		it("throws an error",function () {
+			expect(func).to.throw(Error,"username is required");
+		});
+	});
+	describe("constructor called with config with missing domain",function () {
+		var func;
+		var config;
+		before(function () {
+			config = JSON.parse(JSON.stringify(validConfig));
+			delete config.domain;
+			func = function () {
+				return new BWPhone(config);
+			};
+		});
+		it("throws an error",function () {
+			expect(func).to.throw(Error,"domain is required");
+		});
 	});
 });
