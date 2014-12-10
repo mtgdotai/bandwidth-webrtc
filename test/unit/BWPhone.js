@@ -1,17 +1,22 @@
 "use strict";
 var BWPhone = require("../../lib/BWPhone");
 var expect = require("chai").expect;
+var sinon = require("sinon");
+var SIP = require("sip.js");
 
 describe("BWPhone", function () {
 	var validConfig;
 	before(function () {
 		validConfig = {
-			websocketProxyUrl : "ws://myAwesomeProxy.com",
-			domain            : "domain.com",
-			username          : "nathan"
+			domain   : "domain.com",
+			username : "nathan"
 		};
+		sinon.stub(SIP,"UA",function () {});
 	});
-	describe("constructor called with missing config",function () {
+	after(function () {
+		SIP.UA.restore();
+	});
+	describe("constructor(undefined)",function () {
 		var func;
 		before(function () {
 			func = function () {
@@ -22,7 +27,7 @@ describe("BWPhone", function () {
 			expect(func).to.throw(Error);
 		});
 	});
-	describe("constructor called with config with missing username",function () {
+	describe("constructor(config with missing username)",function () {
 		var func;
 		var config;
 		before(function () {
@@ -36,7 +41,7 @@ describe("BWPhone", function () {
 			expect(func).to.throw(Error,"username is required");
 		});
 	});
-	describe("constructor called with config with missing domain",function () {
+	describe("constructor(config with missing domain)",function () {
 		var func;
 		var config;
 		before(function () {
@@ -48,6 +53,16 @@ describe("BWPhone", function () {
 		});
 		it("throws an error",function () {
 			expect(func).to.throw(Error,"domain is required");
+		});
+	});
+	describe(".createCall()",function () {
+		var call;
+		before(function () {
+			var phone = global.BWClient.createPhone(validConfig);
+			call = phone.createCall();
+		});
+		it("should return a BWCall",function () {
+			expect(call.constructor.name).to.equal("BWCall");
 		});
 	});
 });

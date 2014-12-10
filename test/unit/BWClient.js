@@ -23,7 +23,7 @@ describe("BWClient", function () {
 		after(function () {
 			SIP.UA.restore();
 		});
-		it("should call BWPhone constructor",function () {
+		it("should return a BWPhone",function () {
 			expect(phone.constructor.name).to.equal("BWPhone");
 		});
 	});
