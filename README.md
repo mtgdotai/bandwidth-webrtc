@@ -6,7 +6,7 @@
 npm install
 grunt compile-assets
 ```
-BWClient.js will be generated at "bin/BWClient.js"
+BWClient.js will be generated at "dist/BWClient.js"
 Just include this at the top of your HTML page that will declare a global BWClient object.
 
 ```

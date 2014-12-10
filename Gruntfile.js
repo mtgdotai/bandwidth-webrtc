@@ -1,5 +1,5 @@
 "use strict";
-
+var coveralls = require("coveralls");
 module.exports = function (grunt) {
 
 	var _ = grunt.util._;
@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		browserify : {
 			webrtcClient : {
-				dest : "bin/BWClient.js",
+				dest : "dist/BWClient.js",
 				src  : [ "lib/BWClient.js" ]
 			}
 		},
@@ -43,7 +43,9 @@ module.exports = function (grunt) {
 			coverage : {
 				src     : "test/unit",
 				options : {
-					check : {
+					coverage : true,
+					reporter : "spec",
+					check    : {
 						statements : 100,
 						branches   : 100,
 						lines      : 100,
@@ -51,6 +53,7 @@ module.exports = function (grunt) {
 					}
 				}
 			}
+
 		},
 
 		watch : {
@@ -64,6 +67,15 @@ module.exports = function (grunt) {
 		},
 
 		clean : [ "coverage" ]
+	});
+
+	grunt.event.on("coverage", function (lcov, done) {
+		coveralls.handleInput(lcov, function (err) {
+			if (err) {
+				return done(err);
+			}
+			done();
+		});
 	});
 
 	// Load plugins
