@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		browserify : {
 			webrtcClient : {
-				dest : "bin/BWClient.js",
+				dest : "dist/BWClient.js",
 				src  : [ "lib/BWClient.js" ]
 			}
 		},
