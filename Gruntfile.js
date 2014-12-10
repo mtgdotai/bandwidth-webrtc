@@ -87,4 +87,13 @@ module.exports = function (grunt) {
 	grunt.registerTask("style", "Check for style conformity.", [ "jscs" ]);
 	grunt.registerTask("default", [ "clean", "lint", "style", "test" ]);
 
+	grunt.event.on("coverage", function (lcov, done) {
+		require("coveralls").handleInput(lcov, function (err) {
+			if (err) {
+				return done(err);
+			}
+			done();
+		});
+	});
+
 };
