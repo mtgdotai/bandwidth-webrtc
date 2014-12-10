@@ -1,5 +1,5 @@
 "use strict";
-
+var coveralls = require("coveralls");
 module.exports = function (grunt) {
 
 	var _ = grunt.util._;
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
 	});
 
 	grunt.event.on("coverage", function (lcov, done) {
-		require("coveralls").handleInput(lcov, function (err) {
+		coveralls.handleInput(lcov, function (err) {
 			if (err) {
 				return done(err);
 			}
