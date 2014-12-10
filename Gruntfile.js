@@ -43,7 +43,9 @@ module.exports = function (grunt) {
 			coverage : {
 				src     : "test/unit",
 				options : {
-					check : {
+					coverage : true,
+					reporter : "spec",
+					check    : {
 						statements : 100,
 						branches   : 100,
 						lines      : 100,
@@ -51,6 +53,7 @@ module.exports = function (grunt) {
 					}
 				}
 			}
+
 		},
 
 		watch : {
@@ -64,6 +67,15 @@ module.exports = function (grunt) {
 		},
 
 		clean : [ "coverage" ]
+	});
+
+	grunt.event.on("coverage", function (lcov, done) {
+		require("coveralls").handleInput(lcov, function (err) {
+			if (err) {
+				return done(err);
+			}
+			done();
+		});
 	});
 
 	// Load plugins
@@ -86,14 +98,5 @@ module.exports = function (grunt) {
 	grunt.registerTask("lint", "Check for common code problems.", [ "jshint" ]);
 	grunt.registerTask("style", "Check for style conformity.", [ "jscs" ]);
 	grunt.registerTask("default", [ "clean", "lint", "style", "test" ]);
-
-	grunt.event.on("coverage", function (lcov, done) {
-		require("coveralls").handleInput(lcov, function (err) {
-			if (err) {
-				return done(err);
-			}
-			done();
-		});
-	});
 
 };
