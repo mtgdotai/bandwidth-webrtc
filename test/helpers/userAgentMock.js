@@ -2,17 +2,19 @@
 var EventEmitter = require("events").EventEmitter;
 function UserAgentMock(){
 	var self = this;
+
 	this.remoteStream = {};
 	this.session = new EventEmitter();
 	this.session.getRemoteStreams = function () {
 		return [ self.remoteStream ];
 	};
+
+	this.invite = function () {
+		setTimeout(function () {
+			self.session.emit("accepted");
+		},0);
+		return self.session;
+	};
 }
-UserAgentMock.prototype.invite = function () {
-	var self = this;
-	setTimeout(function () {
-		self.session.emit("accepted");
-	},0);
-	return this.session;
-};
+
 module.exports = UserAgentMock;
