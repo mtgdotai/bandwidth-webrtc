@@ -127,4 +127,46 @@ describe("BWCall", function () {
 			expect(bwCall.hangup).to.throw(Error);
 		});
 	});
+	describe(".dtmf('1')",function () {
+		var bwCall;
+		var userAgentMock;
+		var nullDtmfFunc;
+		var longDtmfFunc;
+		var endedDtmfFunc;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			sinon.spy(userAgentMock.session,"dtmf");
+			bwCall = new BWCall(userAgentMock,{
+				direction : "out",
+				status    : "idle"
+			});
+			bwCall.dial();
+			bwCall.on("ended",done);
+			bwCall.on("connected",function () {
+				bwCall.sendDtmf("1");
+				bwCall.hangup();
+			});
+			nullDtmfFunc = function () {
+				bwCall.sendDtmf();
+			};
+			longDtmfFunc = function () {
+				bwCall.sendDtmf("1234");
+			};
+			endedDtmfFunc = function () {
+				bwCall.sendDtmf("1");
+			};
+		});
+		it("should call bye() on the session",function () {
+			expect(userAgentMock.session.dtmf.calledOnce).to.equal(true);
+		});
+		it("should throw error if tone is not a string",function () {
+			expect(nullDtmfFunc).to.throw(Error);
+		});
+		it("should throw error if tone length != 1",function () {
+			expect(longDtmfFunc).to.throw(Error);
+		});
+		it("should throw error if call status is not 'connected'",function () {
+			expect(endedDtmfFunc).to.throw(Error,"can only send DTMF when in 'connected' status");
+		});
+	});
 });

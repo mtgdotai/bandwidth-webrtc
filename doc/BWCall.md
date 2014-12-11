@@ -96,6 +96,16 @@ bwCall.on("ended",function(){
 bwCall.hangup();
 ```
 
+##sendDtmf(tone)
+Send a DTMF (dual-tone multi-frequency) to the remote device.
+
+**Parameters**
+
+* `tone` String (size =1)
+
+The tone to play. Can be (0-9), #,*
+
+
 #Events
 BWCall is an EventEmitter, and will emit the following events. No extra data is given with the event. Use `getInfo` to get additional information about the call.
 ###`connected`

@@ -35,6 +35,10 @@ bwCall.on("ended",function(){
 });
 bwCall.dial("sip:user_234");
 ...
+//play a DTMF tone
+bwCall.sendDtmf("1");
+bwCall.sendDtmf("#");
+
 //to hangup the call
 bwCall.hangup();
 ```

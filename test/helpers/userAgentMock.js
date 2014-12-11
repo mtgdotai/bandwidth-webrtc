@@ -12,6 +12,10 @@ function UserAgentMock(){
 
 	this.session.bye = function () {};
 
+	this.session.dtmf = function (tone) {
+		self.session.emit("dtmf",tone);
+	};
+
 	this.invite = function () {
 		setTimeout(function () {
 			self.session.emit("accepted");
