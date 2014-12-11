@@ -15,6 +15,20 @@ Just include this at the top of your HTML page that will declare a global BWClie
 ##Quick Start
 Full docs are [here](doc/)
 
+###Outbound Call
+```javascript
+<audio id = "audio-remote"></audio>
+...
+var bwPhone = BWClient.createPhone({
+    username: "user_123",
+    domain: "prod.domain.com",
+    password: "taco123",
+});
+var bwCall = bwPhone.createCall();
+bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
+bwCall.dial("sip:user_234");
+```
+
 ##Supported Browsers
 * Firefox
 * Chrome
