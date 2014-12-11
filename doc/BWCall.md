@@ -75,7 +75,13 @@ var info = call.getInfo();
     
     //state is always given. Possible states are
     // 'idle', 'connecting', 'connected' 
-    state     : "idle"
+    state     : "idle",
+    
+    //your uri (always available for SIP calls)
+    localUri  : "sip:bob123@domain.com",
+    
+    //the remote uri (always available for SIP calls)
+    remoteUri : "sip:alice123@domain.com"
 }
 ```
 

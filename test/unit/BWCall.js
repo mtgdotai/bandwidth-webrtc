@@ -12,7 +12,7 @@ describe("BWCall", function () {
 			var audioElement;
 			var userAgentMock;
 			var beforeDialInfo;
-			var connectingStatus;
+			var afterDialInfo;
 			var connectedStatus;
 			before(function (done) {
 				userAgentMock = new UserAgentMock();
@@ -23,12 +23,13 @@ describe("BWCall", function () {
 				};
 				bwCall = new BWCall(userAgentMock,{
 					direction : "out",
-					status    : "idle"
+					status    : "idle",
+					localUri  : "localUri"
 				});
 				beforeDialInfo = bwCall.getInfo();
 				bwCall.setRemoteAudioElement(audioElement);
-				bwCall.dial();
-				connectingStatus = bwCall.getInfo().status;
+				bwCall.dial("remoteUri");
+				afterDialInfo = bwCall.getInfo();
 
 				//give it a few ms for events to fire
 				setTimeout(function () {
@@ -45,16 +46,22 @@ describe("BWCall", function () {
 			it("plays audio",function () {
 				expect(audioElement.play.calledOnce).to.equal(true);
 			});
-			it("info has a status of 'idle' before .dial()",function () {
+			it("getInfo().status = 'idle' before .dial()",function () {
 				expect(beforeDialInfo.status).to.equal("idle");
 			});
-			it("info has a direction of 'out' before .dial()",function () {
+			it("getInfo().localUri is set before .dial()",function () {
+				expect(beforeDialInfo.localUri).to.equal("localUri");
+			});
+			it("getInfo().direction = 'out' before .dial()",function () {
 				expect(beforeDialInfo.direction).to.equal("out");
 			});
-			it("info has a status of 'connecting' after .dial()",function () {
-				expect(connectingStatus).to.equal("connecting");
+			it("getInfo().status = 'connecting' after .dial()",function () {
+				expect(afterDialInfo.status).to.equal("connecting");
 			});
-			it("info has a status of 'connected' after the call connects",function () {
+			it("getInfo().remoteUri is set after .dial()",function () {
+				expect(afterDialInfo.remoteUri).to.equal("remoteUri");
+			});
+			it("getInfo().status = 'connected' after the call connects",function () {
 				expect(connectedStatus).to.equal("connected");
 			});
 		});
