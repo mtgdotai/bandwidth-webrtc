@@ -53,3 +53,43 @@ var bwCall = bwPhone.createCall();
 bwCall.dial("sip:user_234");
 ```
 
+##getInfo()
+Returns call information
+
+**Parameters**
+
+None
+
+**Result**
+An object that contains information about the call
+
+**Example**
+
+```javascript
+var info = call.getInfo();
+
+//an example of what might be returned
+{
+	//direction is always given
+	direction : "out",
+    
+    //state is always given. Possible states are
+    // 'idle', 'connecting', 'connected' 
+    state     : "idle"
+}
+```
+
+#Events
+BWCall is an EventEmitter, and will emit the following events. No extra data is given with the event. Use `getInfo` to get additional information about the call.
+###`connected`
+For an outbound call, this is emitted once the call is connected, after the remote-audio has been started (if applicable).
+
+###Example
+```javascript
+var call = bwPhone.createCall();
+call.on("connected",function(){
+	//do something when the call has connected
+});
+call.dial("sip:jim-bob@domain.com");
+```
+

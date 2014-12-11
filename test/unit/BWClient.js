@@ -3,6 +3,7 @@ require("../../lib/BWClient");
 var expect = require("chai").expect;
 var sinon = require("sinon");
 var SIP = require("sip.js");
+var BWPhone = require("../../lib/BWPhone");
 
 describe("BWClient", function () {
 	it("should declare BWClient as a global",function () {
@@ -24,7 +25,7 @@ describe("BWClient", function () {
 			SIP.UA.restore();
 		});
 		it("should return a BWPhone",function () {
-			expect(phone.constructor.name).to.equal("BWPhone");
+			expect(phone).is.an.instanceOf(BWPhone);
 		});
 	});
 });

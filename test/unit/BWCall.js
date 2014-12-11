@@ -11,24 +11,51 @@ describe("BWCall", function () {
 			var bwCall;
 			var audioElement;
 			var userAgentMock;
+			var beforeDialInfo;
+			var connectingStatus;
+			var connectedStatus;
 			before(function (done) {
 				userAgentMock = new UserAgentMock();
 				sinon.spy(userAgentMock,"invite");
 				audioElement = {
-					play : function () {
-						done();
-					},
+					play : sinon.spy(),
 					src  : false
 				};
-				bwCall = new BWCall(userAgentMock);
+				bwCall = new BWCall(userAgentMock,{
+					direction : "out",
+					status    : "idle"
+				});
+				beforeDialInfo = bwCall.getInfo();
 				bwCall.setRemoteAudioElement(audioElement);
 				bwCall.dial();
+				connectingStatus = bwCall.getInfo().status;
+
+				//give it a few ms for events to fire
+				setTimeout(function () {
+					connectedStatus = bwCall.getInfo().status;
+					done();
+				},500);
 			});
 			it("sets the correct audio src",function () {
 				expect(audioElement.src).to.equal(userAgentMock.remoteStream);
 			});
-			it("calls userAgent.invite(uri, callOptions), and plays audio",function () {
+			it("calls userAgent.invite(uri, callOptions)",function () {
 				expect(userAgentMock.invite.calledOnce).to.equal(true);
+			});
+			it("plays audio",function () {
+				expect(audioElement.play.calledOnce).to.equal(true);
+			});
+			it("info has a status of 'idle' before .dial()",function () {
+				expect(beforeDialInfo.status).to.equal("idle");
+			});
+			it("info has a direction of 'out' before .dial()",function () {
+				expect(beforeDialInfo.direction).to.equal("out");
+			});
+			it("info has a status of 'connecting' after .dial()",function () {
+				expect(connectingStatus).to.equal("connecting");
+			});
+			it("info has a status of 'connected' after the call connects",function () {
+				expect(connectedStatus).to.equal("connected");
 			});
 		});
 		describe("remoteAudioElement undefined",function () {
@@ -42,7 +69,10 @@ describe("BWCall", function () {
 					play : playAudioStub,
 					src  : false
 				};
-				bwCall = new BWCall(userAgentMock);
+				bwCall = new BWCall(userAgentMock,{
+					direction : "out",
+					status    : "idle"
+				});
 				bwCall.dial();
 
 				//give it a few ms for events to fire
@@ -54,7 +84,19 @@ describe("BWCall", function () {
 			it("does not play audio",function () {
 				expect(playAudioStub.called).to.equal(false);
 			});
-
+		});
+		describe("status is not 'idle'",function () {
+			var bwCall;
+			before(function () {
+				var userAgentMock = new UserAgentMock();
+				bwCall = new BWCall(userAgentMock,{
+					direction : "out",
+					status    : "ended"
+				});
+			});
+			it("should throw an exception",function () {
+				expect(bwCall.dial).to.throw(Error);
+			});
 		});
 	});
 });

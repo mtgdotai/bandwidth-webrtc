@@ -1,5 +1,6 @@
 "use strict";
 var BWPhone = require("../../lib/BWPhone");
+var BWCall = require("../../lib/BWCall");
 var expect = require("chai").expect;
 var sinon = require("sinon");
 var SIP = require("sip.js");
@@ -62,7 +63,7 @@ describe("BWPhone", function () {
 			call = phone.createCall();
 		});
 		it("should return a BWCall",function () {
-			expect(call.constructor.name).to.equal("BWCall");
+			expect(call).is.an.instanceOf(BWCall);
 		});
 	});
 });

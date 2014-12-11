@@ -27,6 +27,9 @@ var bwPhone = BWClient.createPhone({
 });
 var bwCall = bwPhone.createCall();
 bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
+bwCall.on("connected",function(){
+	//the call has connected, and audio is playing
+});
 bwCall.dial("sip:user_234");
 ```
 
