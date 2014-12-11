@@ -79,10 +79,29 @@ var info = call.getInfo();
 }
 ```
 
+##hangup()
+Hang up the call. The call must be in `connected` state.
+
+**Parameters**
+
+None
+
+**Example**
+```javascript
+var bwCall = bwPhone.createCall();
+bwCall.dial("sip:user_234");
+bwCall.on("ended",function(){
+	//the call has ended
+});
+bwCall.hangup();
+```
+
 #Events
 BWCall is an EventEmitter, and will emit the following events. No extra data is given with the event. Use `getInfo` to get additional information about the call.
 ###`connected`
 For an outbound call, this is emitted once the call is connected, after the remote-audio has been started (if applicable).
+###`ended`
+The call has ended.
 
 ###Example
 ```javascript

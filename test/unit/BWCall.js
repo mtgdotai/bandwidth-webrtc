@@ -99,4 +99,32 @@ describe("BWCall", function () {
 			});
 		});
 	});
+	describe(".hangup()",function () {
+		var bwCall;
+		var userAgentMock;
+		var callEndedInfo;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			bwCall = new BWCall(userAgentMock,{
+				direction : "out",
+				status    : "idle"
+			});
+			bwCall.dial();
+			sinon.spy(userAgentMock.session,"bye");
+			bwCall.on("connected",function () {
+				bwCall.hangup();
+				callEndedInfo = bwCall.getInfo();
+				done();
+			});
+		});
+		it("should call bye() on the session",function () {
+			expect(userAgentMock.session.bye.calledOnce).to.equal(true);
+		});
+		it("should set the status to 'ended'",function () {
+			expect(callEndedInfo.status).to.equal("ended");
+		});
+		it("should throw exception if called when not connected",function () {
+			expect(bwCall.hangup).to.throw(Error);
+		});
+	});
 });

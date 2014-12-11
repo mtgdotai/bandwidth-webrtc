@@ -30,7 +30,13 @@ bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
 bwCall.on("connected",function(){
 	//the call has connected, and audio is playing
 });
+bwCall.on("ended",function(){
+	//the call has ended
+});
 bwCall.dial("sip:user_234");
+...
+//to hangup the call
+bwCall.hangup();
 ```
 
 ##Supported Browsers
