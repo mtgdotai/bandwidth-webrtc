@@ -25,7 +25,7 @@ var bwPhone = BWClient.createPhone({
     domain: "prod.domain.com",
     password: "taco123",
 });
-var bwCall = bwPhone.createCall();
+var bwCall = bwPhone.call("sip:user_234");
 bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
 bwCall.on("connected",function(){
 	//the call has connected, and audio is playing
@@ -33,7 +33,6 @@ bwCall.on("connected",function(){
 bwCall.on("ended",function(){
 	//the call has ended
 });
-bwCall.dial("sip:user_234");
 ...
 //play a DTMF tone
 bwCall.sendDtmf("1");
