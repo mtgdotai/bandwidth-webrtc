@@ -43,7 +43,9 @@ describe("BWCall", function () {
 			};
 		});
 		bwCall.on("ended",function () {
+			bwCall.getInfo().status = "invalid status";
 			callEndedInfo = bwCall.getInfo();
+
 			dtmfAfterEndedFunc = function () {
 				bwCall.sendDtmf("1");
 			};

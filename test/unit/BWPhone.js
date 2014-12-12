@@ -5,6 +5,7 @@ var expect = require("chai").expect;
 var sinon = require("sinon");
 var SIP = require("sip.js");
 var UserAgentMock = require("../helpers/userAgentMock");
+var _ = require("lodash");
 
 describe("BWPhone", function () {
 	var validConfig;
@@ -35,7 +36,7 @@ describe("BWPhone", function () {
 		var func;
 		var config;
 		before(function () {
-			config = JSON.parse(JSON.stringify(validConfig));
+			config = _.cloneDeep(validConfig);
 			delete config.username;
 			func = function () {
 				return new BWPhone(config);
