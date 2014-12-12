@@ -25,9 +25,21 @@ var bwPhone = BWClient.createPhone({
     domain: "prod.domain.com",
     password: "taco123",
 });
-var bwCall = bwPhone.createCall();
+var bwCall = bwPhone.call("sip:user_234");
 bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
-bwCall.dial("sip:user_234");
+bwCall.on("connected",function(){
+	//the call has connected, and audio is playing
+});
+bwCall.on("ended",function(){
+	//the call has ended
+});
+...
+//play a DTMF tone
+bwCall.sendDtmf("1");
+bwCall.sendDtmf("#");
+
+//to hangup the call
+bwCall.hangup();
 ```
 
 ##Supported Browsers

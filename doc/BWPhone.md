@@ -1,12 +1,14 @@
 #BWPhone
 BWPhone is bound to a single identity (phone-number), and is used to make/receive audio calls.
 ##Api
-###createCall()
-Creates a [BWCall](BWCall.md) that can be used to make outgoing calls.
+###call(uri)
+Creates an outgoing call to `uri` and returns a [BWCall](BWCall.md).
 
 **Parameters**
 
-none
+* `uri` (String)
+
+The destination to call
 
 **Result**
 
@@ -22,5 +24,5 @@ var bwPhone = BWClient.createPhone({
     domain: "prod.domain.com",
     password: "taco123",
 });
-var bwCall = bwPhone.createCall();
+var bwCall = bwPhone.call("sip:bob@domain.com");
 ```

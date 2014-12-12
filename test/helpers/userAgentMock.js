@@ -5,8 +5,15 @@ function UserAgentMock(){
 
 	this.remoteStream = {};
 	this.session = new EventEmitter();
+
 	this.session.getRemoteStreams = function () {
 		return [ self.remoteStream ];
+	};
+
+	this.session.bye = function () {};
+
+	this.session.dtmf = function (tone) {
+		self.session.emit("dtmf",tone);
 	};
 
 	this.invite = function () {
