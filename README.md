@@ -25,7 +25,7 @@ var bwPhone = BWClient.createPhone({
     domain: "prod.domain.com",
     password: "taco123",
 });
-var bwCall = bwPhone.call("sip:user_234");
+var bwCall = bwPhone.call("+1 222-333-4444");
 bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
 bwCall.on("connected",function(){
 	//the call has connected, and audio is playing
