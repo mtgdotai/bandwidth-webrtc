@@ -112,7 +112,7 @@ describe("BWPhone", function () {
 	testCall("(222)-333-4444", "sip:+12223334444@rocket-gw.ring.to");
 	testCall("2223334444", "sip:+12223334444@rocket-gw.ring.to");
 	testCall("+12223334444", "sip:+12223334444@rocket-gw.ring.to");
-	
+
 	testCall("this is invalid", null);
 	testCall("sip:a@b.c", "sip:a@b.c");
 
