@@ -60,19 +60,46 @@ describe("BWPhone", function () {
 			expect(func).to.throw(Error,"domain is required");
 		});
 	});
-	// describe(".call(sip-uri)",function () {
-	// 	var call;
-	// 	var userAgentMock;
-	// 	before(function () {
-	// 		userAgentMock = new UserAgentMock();
-	// 		var phone = new BWPhone(validConfig);
-	// 		call = phone.call("sip:a@b.c");
-	// 	});
+	function testLogLevel(level,shouldThrow){
 
-	// });
+		describe ("setLogLevel(" + level + ")",function () {
+			var functionToTest;
+			var phone;
+			before(function () {
+				phone = new BWPhone(validConfig);
+				if (shouldThrow){
+					functionToTest = function () {
+						phone.setLogLevel(level);
+					};
+				}
+				else {
+					phone.setLogLevel(level);
+				}
+			});
+			if (shouldThrow){
+				it ("should throw an error",function () {
+					expect(functionToTest).to.throw(Error);
+				});
+			}
+			else {
+				it ("should set the correct log level",function () {
+					expect(phone.getLogLevel()).to.equal(level);
+				});
+			}
+		});
+
+	}
+	testLogLevel("debug",false);
+	testLogLevel("log",false);
+	testLogLevel("warn",false);
+	testLogLevel("error",false);
+	testLogLevel("",true);
+	testLogLevel(null,true);
+	testLogLevel("asdfasdf",true);
+
 	//Tests that the given uri calls remoteUri, or that is throws if remoteUri is null
 	function testCall(uri,remoteUri){
-		describe(".call(" + uri + ")",function () {
+		describe(".call(\"" + uri + "\")",function () {
 			var userAgentMock;
 			var functionToTest;
 

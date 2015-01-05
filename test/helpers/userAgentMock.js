@@ -4,6 +4,9 @@ function UserAgentMock(){
 	var self = this;
 
 	this.remoteStream = {};
+	this.log = {
+		level : 1
+	};
 	this.session = new EventEmitter();
 
 	this.session.getRemoteStreams = function () {
