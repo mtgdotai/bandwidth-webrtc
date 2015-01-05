@@ -1,13 +1,26 @@
 language: node_js
 node_js:
-  - '0.10'
+- '0.10'
 branches:
   only:
-    - master
+  - master
+before_deploy: grunt compile-assets
+deploy:
+  provider: s3
+  access_key_id: AKIAIZ26DCA33E6U3LZQ
+  secret_access_key:
+    secure: NMBxTWrjOMUqPEk48IQoS/xozMNsLEGNq4VKo1xLOxYXbyRQy+ChVWaBmijwXUl5k99HylY4Qnu2OJIDzWYYDs0dN5L/ugZiz68pHBG64Wxnyr6nBQ2X7e/bRlaU4nahyJHMG3FV0eFbyVyOluY8rFzFDFGm9veO5IqASusTT6Q=
+  bucket: webrtc-client
+  skip_cleanup: true
+  local_dir: ./dist
+  on:
+    branch: master
 notifications:
   hipchat:
     rooms:
-      - 1ac30153f58fc1a1f21b241f59919f@1040022
+    - 1ac30153f58fc1a1f21b241f59919f@1040022
     template:
-      - '%{repository}#%{build_number} (%{branch} - %{commit_message} : %{author}): %{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change view</a>)'
+    - ! '%{repository}#%{build_number} (%{branch} - %{commit_message} : %{author}):
+      %{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change
+      view</a>)'
     format: html
