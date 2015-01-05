@@ -60,25 +60,60 @@ describe("BWPhone", function () {
 			expect(func).to.throw(Error,"domain is required");
 		});
 	});
-	describe(".call()",function () {
-		var call;
-		var userAgentMock;
-		before(function () {
-			userAgentMock = new UserAgentMock();
-			var phone = new BWPhone(validConfig);
-			call = phone.call("remoteUri");
+	// describe(".call(sip-uri)",function () {
+	// 	var call;
+	// 	var userAgentMock;
+	// 	before(function () {
+	// 		userAgentMock = new UserAgentMock();
+	// 		var phone = new BWPhone(validConfig);
+	// 		call = phone.call("sip:a@b.c");
+	// 	});
+
+	// });
+	//Tests that the given uri calls remoteUri, or that is throws if remoteUri is null
+	function testCall(uri,remoteUri){
+		describe(".call(" + uri + ")",function () {
+			var userAgentMock;
+			var functionToTest;
+
+			before(function () {
+				userAgentMock = new UserAgentMock();
+				var phone = new BWPhone(validConfig);
+				functionToTest = function () {
+					return phone.call(uri);
+				};
+			});
+			if (remoteUri){
+				it("should set correct remoteUri",function () {
+					expect(functionToTest().getInfo().remoteUri).to.equal(remoteUri);
+				});
+				it("should set localUri",function () {
+					expect(functionToTest().getInfo().localUri).to.equal("sip:nathan@domain.com");
+				});
+				it("should set direction = 'out'",function () {
+					expect(functionToTest().getInfo().direction).to.equal("out");
+				});
+				it("should return a BWCall",function () {
+					expect(functionToTest()).is.an.instanceOf(BWCall);
+				});
+			}
+			else {
+				it("should throw an error",function () {
+					expect(functionToTest).to.throw(Error,"invalid uri");
+				});
+			}
 		});
-		it("should return a BWCall",function () {
-			expect(call).is.an.instanceOf(BWCall);
-		});
-		it("should set direction = 'out'",function () {
-			expect(call.getInfo().direction).to.equal("out");
-		});
-		it("should set localUri",function () {
-			expect(call.getInfo().localUri).to.equal("sip:nathan@domain.com");
-		});
-		it("should set remoteUri",function () {
-			expect(call.getInfo().remoteUri).to.equal("remoteUri");
-		});
-	});
+	}
+	testCall("+12223334444", "sip:+12223334444@rocket-gw.ring.to");
+	testCall("+1 222 333 4444", "sip:+12223334444@rocket-gw.ring.to");
+	testCall("+1 (222) 333-4444", "sip:+12223334444@rocket-gw.ring.to");
+	testCall("+1(222)-333-4444", "sip:+12223334444@rocket-gw.ring.to");
+	testCall("+(222)-333-4444", null);
+	testCall("(222)-333-4444", "sip:+12223334444@rocket-gw.ring.to");
+	testCall("2223334444", "sip:+12223334444@rocket-gw.ring.to");
+	testCall("+12223334444", "sip:+12223334444@rocket-gw.ring.to");
+
+	testCall("this is invalid", null);
+	testCall("sip:a@b.c", "sip:a@b.c");
+
 });
