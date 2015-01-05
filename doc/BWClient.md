@@ -21,7 +21,7 @@ It currently only supports SIP for WebRTC signaling.
     //optional: password to authenticate the SIP user
     password: "taco123",
     
-    //optional: is the phone should register to receive incoming events (incoming calls)
+    //optional: if the phone should register to receive incoming events (incoming calls)
     register: true //default is false
 }
 ```
