@@ -4,7 +4,6 @@ node_js:
 branches:
   only:
   - master
-  - travis_test
 before_deploy: 
   - grunt compile-assets
   - version=$(cat package.json | jq .version)
@@ -22,7 +21,7 @@ deploy:
   acl: public_read
   local_dir: ./dist
   on:
-    branch: travis_test
+    branch: master
 notifications:
   hipchat:
     rooms:
