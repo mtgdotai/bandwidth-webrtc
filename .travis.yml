@@ -7,7 +7,9 @@ branches:
   - travis_test
 before_deploy: 
   - grunt compile-assets
-  - version=$(npm info webrtc-client version)
+  - apt-get install jq
+  - version=$(cat package.json | jq .version)
+  - version=${version//\"}
   - mkdir $version
   - cp -r dist/* $version
   - mv $version dist
