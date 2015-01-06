@@ -7,7 +7,6 @@ branches:
   - travis_test
 before_deploy: 
   - grunt compile-assets
-  - apt-get install jq
   - version=$(cat package.json | jq .version)
   - version=${version//\"}
   - mkdir $version
