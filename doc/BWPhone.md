@@ -56,7 +56,6 @@ Retrieves the current log level. The default level is "log".
 **Parameters**
 
 none
-Can be "debug","log","warn" or "error"
 
 **Result**
 
@@ -67,4 +66,39 @@ The current log level ("debug", "log", "warn", or "error").
 var bwPhone = BWClient.createPhone(<config>);
 var logLevel = bwPhone.getLogLevel();
 
+```
+
+##register()
+Registers the phone to receive incoming calls.
+
+**Parameters**
+
+none
+
+**Result**
+
+no return value
+
+**Example**
+```javascript
+var bwPhone = BWClient.createPhone(<config>);
+bwPhone.register();
+```
+
+##unregister()
+Unregisters the phone. Incoming calls will not be received.
+
+**Parameters**
+
+none
+
+**Result**
+
+no return value
+
+**Example**
+```javascript
+var bwPhone = BWClient.createPhone(<config>);
+bwPhone.register();
+bwPhone.unregister();
 ```

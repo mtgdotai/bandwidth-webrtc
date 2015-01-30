@@ -9,13 +9,15 @@ var _ = require("lodash");
 
 describe("BWPhone", function () {
 	var validConfig;
+	var userAgentMock = null;
 	before(function () {
 		validConfig = {
 			domain   : "domain.com",
 			username : "nathan"
 		};
 		sinon.stub(SIP,"UA",function (config) {
-			return new UserAgentMock(config);
+			userAgentMock = new UserAgentMock(config);
+			return userAgentMock;
 		});
 	});
 	after(function () {
@@ -50,7 +52,7 @@ describe("BWPhone", function () {
 		var func;
 		var config;
 		before(function () {
-			config = JSON.parse(JSON.stringify(validConfig));
+			config = _.cloneDeep(validConfig);
 			delete config.domain;
 			func = function () {
 				return new BWPhone(config);
@@ -58,6 +60,42 @@ describe("BWPhone", function () {
 		});
 		it("throws an error",function () {
 			expect(func).to.throw(Error,"domain is required");
+		});
+	});
+	describe(".on(incomingCall)",function () {
+		var bwCall;
+		before(function (done) {
+			var bwPhone = new BWPhone(validConfig);
+			bwPhone.on("incomingCall", function (call) {
+				bwCall = call;
+				done();
+			});
+			userAgentMock.emit("invite",userAgentMock.session);
+		});
+		it("emits 'incomingCall' with a bwCall object",function () {
+			expect(bwCall).is.an.instanceOf(BWCall);
+		});
+	});
+	describe(".register()",function () {
+		var bwPhone;
+		before(function () {
+			bwPhone = new BWPhone(validConfig);
+			sinon.spy(userAgentMock,"register");
+			bwPhone.register();
+		});
+		it("should register",function () {
+			expect(userAgentMock.register.calledOnce).to.equal(true);
+		});
+	});
+	describe(".unregister()",function () {
+		var bwPhone;
+		before(function () {
+			bwPhone = new BWPhone(validConfig);
+			sinon.spy(userAgentMock,"unregister");
+			bwPhone.unregister();
+		});
+		it("should unregister",function () {
+			expect(userAgentMock.unregister.calledOnce).to.equal(true);
 		});
 	});
 	function testLogLevel(level,shouldThrow){
@@ -97,50 +135,48 @@ describe("BWPhone", function () {
 	testLogLevel(null,true);
 	testLogLevel("asdfasdf",true);
 
-	//Tests that the given uri calls remoteUri, or that is throws if remoteUri is null
-	function testCall(uri,remoteUri){
+	//Tests that the given uri calls remoteUri, and sets remoteId correctly
+	function testCall(uri,remoteUri,remoteId){
 		describe(".call(\"" + uri + "\")",function () {
 			var userAgentMock;
-			var functionToTest;
+			var call;
 
 			before(function () {
 				userAgentMock = new UserAgentMock();
 				var phone = new BWPhone(validConfig);
-				functionToTest = function () {
-					return phone.call(uri);
-				};
+				call = phone.call(uri);
 			});
-			if (remoteUri){
-				it("should set correct remoteUri",function () {
-					expect(functionToTest().getInfo().remoteUri).to.equal(remoteUri);
-				});
-				it("should set localUri",function () {
-					expect(functionToTest().getInfo().localUri).to.equal("sip:nathan@domain.com");
-				});
-				it("should set direction = 'out'",function () {
-					expect(functionToTest().getInfo().direction).to.equal("out");
-				});
-				it("should return a BWCall",function () {
-					expect(functionToTest()).is.an.instanceOf(BWCall);
-				});
-			}
-			else {
-				it("should throw an error",function () {
-					expect(functionToTest).to.throw(Error,"invalid uri");
+			it("should set correct remoteUri",function () {
+				expect(call.getInfo().remoteUri).to.equal(remoteUri);
+			});
+			it("should set localUri",function () {
+				expect(call.getInfo().localUri).to.equal("sip:nathan@domain.com");
+			});
+			it("should set direction = 'out'",function () {
+				expect(call.getInfo().direction).to.equal("out");
+			});
+			it("should return a BWCall",function () {
+				expect(call).is.an.instanceOf(BWCall);
+			});
+			if (remoteId){
+				it("should set remoteId correctly",function () {
+					expect(call.getInfo().remoteId).to.equal(remoteId);
 				});
 			}
 		});
 	}
-	testCall("+12223334444", "sip:+12223334444@rocket-gw.ring.to");
-	testCall("+1 222 333 4444", "sip:+12223334444@rocket-gw.ring.to");
-	testCall("+1 (222) 333-4444", "sip:+12223334444@rocket-gw.ring.to");
-	testCall("+1(222)-333-4444", "sip:+12223334444@rocket-gw.ring.to");
-	testCall("+(222)-333-4444", null);
-	testCall("(222)-333-4444", "sip:+12223334444@rocket-gw.ring.to");
-	testCall("2223334444", "sip:+12223334444@rocket-gw.ring.to");
-	testCall("+12223334444", "sip:+12223334444@rocket-gw.ring.to");
-
-	testCall("this is invalid", null);
+	// var domain = "rocket-gw.ring.to";
+	// var domain = "webrtc.bwincubator.com";
+	var domain = "test.webrtc.stage.bwc-clients.com";
+	testCall("+12223334444", "sip:+12223334444@" + domain);
+	testCall("+1 222 333 4444", "sip:+12223334444@" + domain);
+	testCall("+1 (222) 333-4444", "sip:+12223334444@" + domain);
+	testCall("+1(222)-333-4444", "sip:+12223334444@" + domain);
+	testCall("(222)-333-4444", "sip:+12223334444@" + domain);
+	testCall("2223334444", "sip:+12223334444@" + domain);
+	testCall("+12223334444", "sip:+12223334444@" + domain);
 	testCall("sip:a@b.c", "sip:a@b.c");
+	testCall("sip:test@" + domain,"sip:test@" + domain,"test");
+	testCall("test","sip:test@" + domain,"test");
 
 });

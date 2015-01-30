@@ -4,6 +4,7 @@ var expect = require("chai").expect;
 var sinon = require("sinon");
 var SIP = require("sip.js");
 var BWPhone = require("../../lib/BWPhone");
+var UserAgentMock = require("../helpers/userAgentMock");
 
 describe("BWClient", function () {
 	it("should declare BWClient as a global",function () {
@@ -13,7 +14,9 @@ describe("BWClient", function () {
 		var validConfig;
 		var phone;
 		before(function () {
-			sinon.stub(SIP,"UA",function () {});
+			sinon.stub(SIP,"UA",function (config) {
+				return new UserAgentMock(config);
+			});
 			validConfig = {
 				username : "nathan",
 				domain   : "domain.com",
