@@ -259,12 +259,13 @@ describe("BWCall", function () {
 			expect(userAgentMock.session.cancel.calledOnce).to.equal(true);
 		});
 	});
-	describe (".mute()/.unmute() before call connects",function () {
+	describe (".mute() before call connects",function () {
 		var userAgentMock;
 		var bwCall;
 		before(function (done) {
 			userAgentMock = new UserAgentMock();
-
+			sinon.spy(userAgentMock.session,"mute");
+			sinon.spy(userAgentMock.session,"unmute");
 			bwCall = new BWCall({
 				info      : {
 					direction : "out",
@@ -275,13 +276,16 @@ describe("BWCall", function () {
 				},
 				userAgent : userAgentMock
 			});
-			bwCall.on("connecting",done);
+			bwCall.unmute();
+			bwCall.mute();
+			bwCall.on("connecting",userAgentMock.mockReceiveAccept);
+			bwCall.on("connected",done);
 		});
-		it (".mute() should throw an error",function () {
-			expect(bwCall.mute).to.throw(Error);
+		it ("session.mute should be called when call is connected",function () {
+			expect(userAgentMock.session.mute.calledOnce).to.equal(true);
 		});
-		it (".unmute() should throw an error",function () {
-			expect(bwCall.unmute).to.throw(Error);
+		it ("session.unmute should have NOT been called",function () {
+			expect(userAgentMock.session.unmute.calledOnce).to.equal(false);
 		});
 	});
 
