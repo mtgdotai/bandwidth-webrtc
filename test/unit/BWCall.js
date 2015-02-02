@@ -64,6 +64,8 @@ describe("BWCall", function () {
 			};
 			done();
 		});
+		userAgentMock.mockReceiveAccept();
+
 	});
 	describe("constructor()",function () {
 		it("calls userAgent.invite(uri, callOptions)",function () {

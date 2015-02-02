@@ -42,10 +42,15 @@ function UserAgentMock(){
 	this.unregister = function () {};
 
 	this.invite = function () {
+		// setTimeout(function () {
+		// 	self.session.emit("accepted");
+		// },1);
+		return self.session;
+	};
+	this.mockReceiveAccept = function () {
 		setTimeout(function () {
 			self.session.emit("accepted");
-		},1);
-		return self.session;
+		},10);
 	};
 }
 UserAgentMock.prototype = Object.create(EventEmitter.prototype);
