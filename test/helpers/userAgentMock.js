@@ -48,9 +48,7 @@ function UserAgentMock(){
 		return self.session;
 	};
 	this.mockReceiveAccept = function () {
-		setTimeout(function () {
-			self.session.emit("accepted");
-		},10);
+		self.session.emit("accepted");
 	};
 }
 UserAgentMock.prototype = Object.create(EventEmitter.prototype);
