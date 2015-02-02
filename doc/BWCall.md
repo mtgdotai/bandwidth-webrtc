@@ -125,7 +125,6 @@ The tone to play. Can be (0-9), #,*
 
 ##mute()
 Mute the microphone on the local device.
-The call must be in the `connected` state.
 
 
 **Parameters**
@@ -134,7 +133,6 @@ None
 
 ##unmute()
 Unmute the microphone on the local device.
-The call must be in the `connected` state.
 
 **Parameters**
 
