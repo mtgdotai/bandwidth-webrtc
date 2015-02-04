@@ -24,7 +24,7 @@ var bwPhone = BWClient.createPhone({
     username: "user_123",
     domain: "prod.domain.com",
     password: "taco123",
-    logLevel: "debug"//can be debug,log,earn,error (default=log)
+    logLevel: "debug"//can be debug,log,warn,error (default=log)
 });
 var bwCall = bwPhone.call("222-333-4444");
 bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
