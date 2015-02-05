@@ -7,7 +7,7 @@ var BWPhone = require("../../lib/BWPhone");
 var UserAgentMock = require("../helpers/userAgentMock");
 var GetUserMediaMock = require("../helpers/getUserMediaMock");
 var getUserMediaMock = new GetUserMediaMock();
-var MediaStreamTrackMock = require("../helpers/MediaStreamTrackMock");
+var MediaStreamTrackMock = require("../helpers/mediaStreamTrackMock");
 
 global.navigator = {
 	getUserMedia : getUserMediaMock.getUserMedia
