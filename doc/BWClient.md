@@ -38,3 +38,34 @@ var bwPhone = BWClient.createPhone({
 });
 ```
 
+###getMicrophones
+Retrieves a list of microphones that can be used for the call. See `BWCall.setMicrophoneId()` to choose which microphone to use.
+Note: The `name` field will only be available on web pages using HTTPS, and will be null otherwise.
+
+**Parameters**
+
+none
+
+**Result**
+
+A promise that will contain an array of microphone objects.
+
+```javascript
+Microphone Object
+{
+	id   : "9n16xb29337fbaubc89a23bb7213n08", //a unique id
+    name : "Super Extreme High-Definition HD microphone 9800"//a user-friendly name to identify the microphone
+}
+```
+
+**Example**
+```javascript
+BWClient.getMicrophones()
+.then(function(microphoneArray){
+	//microphoneArray contains an array of microphone objects
+})
+.catch(function(){
+	//something went wrong...
+});
+
+```

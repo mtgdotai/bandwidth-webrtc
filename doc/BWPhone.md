@@ -26,7 +26,79 @@ A [BWCall](BWCall.md) instance
 var bwPhone = BWClient.createPhone({
     username: "user_123",
     domain: "prod.domain.com",
-    password: "taco123",
+    password: "taco123"
 });
 var bwCall = bwPhone.call("sip:bob@domain.com");
+```
+###setLogLevel(level)
+Sets the log level
+
+**Parameters**
+
+* `level` (String)
+
+Can be "debug","log","warn" or "error"
+
+**Result**
+
+none
+
+**Example**
+```javascript
+var bwPhone = BWClient.createPhone(<config>);
+bwPhone.setLogLevel("warn");
+
+```
+
+###getLogLevel()
+Retrieves the current log level. The default level is "log".
+
+**Parameters**
+
+none
+
+**Result**
+
+The current log level ("debug", "log", "warn", or "error"). 
+
+**Example**
+```javascript
+var bwPhone = BWClient.createPhone(<config>);
+var logLevel = bwPhone.getLogLevel();
+
+```
+
+##register()
+Registers the phone to receive incoming calls.
+
+**Parameters**
+
+none
+
+**Result**
+
+no return value
+
+**Example**
+```javascript
+var bwPhone = BWClient.createPhone(<config>);
+bwPhone.register();
+```
+
+##unregister()
+Unregisters the phone. Incoming calls will not be received.
+
+**Parameters**
+
+none
+
+**Result**
+
+no return value
+
+**Example**
+```javascript
+var bwPhone = BWClient.createPhone(<config>);
+bwPhone.register();
+bwPhone.unregister();
 ```

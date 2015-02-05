@@ -24,24 +24,58 @@ var bwPhone = BWClient.createPhone({
     username: "user_123",
     domain: "prod.domain.com",
     password: "taco123",
+    logLevel: "debug"//can be debug,log,warn,error (default=log)
 });
-var bwCall = bwPhone.call("+1 222-333-4444");
+var bwCall = bwPhone.call("222-333-4444");
 bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
 bwCall.on("connected",function(){
-	//the call has connected, and audio is playing
+    //the call has connected, and audio is playing
 });
 bwCall.on("ended",function(){
-	//the call has ended
+    //the call has ended
 });
 ...
 //play a DTMF tone
 bwCall.sendDtmf("1");
 bwCall.sendDtmf("#");
 
+//mute call
+bwCall.mute();
+
+//unmute call
+bwCall.unmute();
+
 //to hangup the call
 bwCall.hangup();
 ```
-
+###Inbound Call
+```javascript
+<audio id = "audio-remote"></audio>
+...
+var bwPhone = BWClient.createPhone({
+    username : "user_123",
+    domain   : "prod.domain.com",
+    password : "taco123",
+    logLevel : "debug"
+});
+bwPhone.on("incomingCall",function (bwCall) {
+    //get into to determine if the call should be accepted/rejected
+    var info = bwCall.getInfo();
+    
+    //user friendly remote identifier
+    var remoteId = info.remoteId;
+    
+    //setup event handlers
+    bwCall.on("connected",function () {
+        
+    });
+    //to accept the call
+    bwCall.accept();
+    
+    //to reject the call
+    bwCall.reject();
+});
+```
 ##Supported Browsers
 * Firefox
 * Chrome

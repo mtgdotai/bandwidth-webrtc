@@ -21,15 +21,23 @@ describe("BWCall", function () {
 		sinon.spy(userAgentMock,"invite");
 		sinon.spy(userAgentMock.session,"dtmf");
 		sinon.spy(userAgentMock.session,"bye");
+		sinon.spy(userAgentMock.session,"mute");
+		sinon.spy(userAgentMock.session,"unmute");
 		audioElement = {
 			play : sinon.spy(),
 			src  : false
 		};
-		bwCall = new BWCall(userAgentMock,{
-			direction : "out",
-			status    : "connecting",
-			localUri  : "localUri",
-			remoteUri : "remoteUri"
+
+		bwCall = new BWCall(
+		{
+			info      : {
+				direction : "out",
+				localUri  : "localUri",
+				localId   : "localId",
+				remoteUri : "remoteUri",
+				remoteId  : "remoteId"
+			},
+			userAgent : userAgentMock
 		});
 		beforeConnectedInfo = bwCall.getInfo();
 		bwCall.setRemoteAudioElement(audioElement);
@@ -37,6 +45,8 @@ describe("BWCall", function () {
 		bwCall.on("connected",function () {
 			afterConnectedInfo = bwCall.getInfo();
 			bwCall.sendDtmf("1");
+			bwCall.mute();
+			bwCall.unmute();
 			bwCall.hangup();
 			invalidDtmfFunc = function () {
 				bwCall.sendDtmf("123");
@@ -53,6 +63,9 @@ describe("BWCall", function () {
 				bwCall.sendDtmf(null);
 			};
 			done();
+		});
+		bwCall.on("connecting",function () {
+			userAgentMock.mockReceiveAccept();
 		});
 	});
 	describe("constructor()",function () {
@@ -101,4 +114,226 @@ describe("BWCall", function () {
 			expect(bwCall.hangup).to.throw(Error);
 		});
 	});
+	describe(".mute()",function () {
+		it ("calls session.mute()",function () {
+			expect(userAgentMock.session.mute.calledOnce).to.equal(true);
+		});
+	});
+	describe(".unmute()",function () {
+		it ("calls session.unmute()",function () {
+			expect(userAgentMock.session.unmute.calledOnce).to.equal(true);
+		});
+	});
+	describe(".accept() (valid)",function () {
+		var bwCall;
+		var session;
+		before(function (done) {
+			session = new UserAgentMock().session;
+			sinon.spy(session,"accept");
+			bwCall = new BWCall({
+				info    : {
+					direction : "in",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				session : session
+			});
+			bwCall.accept();
+			bwCall.on("ended",done);
+			session.emit("bye");//receive hangup from remote-end
+		});
+		it("should accept the call",function () {
+			expect(session.accept.calledOnce).to.equal(true);
+		});
+	});
+	describe(".accept() (invalid)",function () {
+		var bwCall;
+		before(function () {
+			var session = new UserAgentMock().session;
+			sinon.spy(session,"accept");
+			bwCall = new BWCall({
+				info      :{
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : new UserAgentMock()
+			});
+		});
+		it("should throw an exception",function () {
+			expect(bwCall.accept).to.throw(Error);
+		});
+	});
+	describe(".reject() (valid)",function () {
+		var bwCall;
+		var session;
+		before(function () {
+			session = new UserAgentMock().session;
+			sinon.spy(session,"reject");
+			bwCall = new BWCall({
+				info    :{
+					direction : "in",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				session : session
+			});
+			bwCall.reject();
+		});
+		it("should reject the call",function () {
+			expect(session.reject.calledOnce).to.equal(true);
+		});
+	});
+	describe(".reject() (invalid)",function () {
+		var bwCall;
+		before(function () {
+			var session = new UserAgentMock().session;
+			sinon.spy(session,"reject");
+			bwCall = new BWCall({
+				info      :{
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : new UserAgentMock()
+			});
+		});
+		it("should throw an exception",function () {
+			expect(bwCall.reject).to.throw(Error);
+		});
+	});
+	describe("outgoing call is rejected",function () {
+		var bwCall;
+		before(function (done) {
+			var userAgent = new UserAgentMock();
+			bwCall = new BWCall({
+				info      :{
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgent
+			});
+			bwCall.on("ended",done);
+			bwCall.on("connecting",function () {
+				userAgent.session.emit("rejected");//simulate remote-end rejecting incoming call
+			});
+		});
+		it("call should end",function () {
+			expect(bwCall.getInfo().status).to.equal("ended");
+		});
+	});
+	describe ("outgoing call is ended before remote-end accepts",function () {
+		var userAgentMock;
+		var bwCall;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			sinon.spy(userAgentMock.session,"cancel");
+
+			bwCall = new BWCall({
+				info      : {
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgentMock
+			});
+			bwCall.on("connecting",function () {
+				bwCall.hangup();
+			});
+			bwCall.on("ended",done);
+		});
+		it ("should use session.cancel instead of session.bye",function () {
+			expect(userAgentMock.session.cancel.calledOnce).to.equal(true);
+		});
+	});
+	describe (".mute() before call connects",function () {
+		var userAgentMock;
+		var bwCall;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			sinon.spy(userAgentMock.session,"mute");
+			sinon.spy(userAgentMock.session,"unmute");
+			bwCall = new BWCall({
+				info      : {
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgentMock
+			});
+			bwCall.unmute();
+			bwCall.mute();
+			bwCall.on("connecting",userAgentMock.mockReceiveAccept);
+			bwCall.on("connected",done);
+		});
+		it ("session.mute should be called when call is connected",function () {
+			expect(userAgentMock.session.mute.calledOnce).to.equal(true);
+		});
+		it ("session.unmute should have NOT been called",function () {
+			expect(userAgentMock.session.unmute.calledOnce).to.equal(false);
+		});
+	});
+	describe (".setMicrophoneId()",function () {
+		var userAgentMock;
+		var bwCall;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			sinon.spy(userAgentMock,"invite");
+			bwCall = new BWCall({
+				info      : {
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgentMock
+			});
+			bwCall.setMicrophoneId(42);
+			bwCall.on("connecting",done);
+		});
+		it ("should set correct media constraints",function () {
+			expect(userAgentMock.invite.getCall(0).args[ 1 ].media.constraints
+				.audio.optional[ 0 ].sourceId).to.equal(42);
+		});
+	});
+	describe (".setMicrophoneId() after call connects",function () {
+		var userAgentMock;
+		var bwCall;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			sinon.spy(userAgentMock,"invite");
+			bwCall = new BWCall({
+				info      : {
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgentMock
+			});
+			bwCall.on("connecting",userAgentMock.mockReceiveAccept);
+			bwCall.on("connected",done);
+		});
+		it ("should throw an error",function () {
+			expect(bwCall.setMicrophoneId,42).to.throw(Error);
+		});
+	});
+
 });
