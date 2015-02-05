@@ -167,7 +167,7 @@ describe("BWPhone", function () {
 	}
 	// var domain = "rocket-gw.ring.to";
 	// var domain = "webrtc.bwincubator.com";
-	var domain = "test.webrtc.stage.bwc-clients.com";
+	var domain = "nfuchs.ringto.stage.bwc-clients.com";
 	testCall("+12223334444", "sip:+12223334444@" + domain);
 	testCall("+1 222 333 4444", "sip:+12223334444@" + domain);
 	testCall("+1 (222) 333-4444", "sip:+12223334444@" + domain);
