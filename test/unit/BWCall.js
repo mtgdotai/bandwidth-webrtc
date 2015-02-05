@@ -288,5 +288,52 @@ describe("BWCall", function () {
 			expect(userAgentMock.session.unmute.calledOnce).to.equal(false);
 		});
 	});
+	describe (".setMicrophoneId()",function () {
+		var userAgentMock;
+		var bwCall;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			sinon.spy(userAgentMock,"invite");
+			bwCall = new BWCall({
+				info      : {
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgentMock
+			});
+			bwCall.setMicrophoneId(42);
+			bwCall.on("connecting",done);
+		});
+		it ("should set correct media constraints",function () {
+			expect(userAgentMock.invite.getCall(0).args[ 1 ].media.constraints
+				.audio.optional[ 0 ].sourceId).to.equal(42);
+		});
+	});
+	describe (".setMicrophoneId() after call connects",function () {
+		var userAgentMock;
+		var bwCall;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			sinon.spy(userAgentMock,"invite");
+			bwCall = new BWCall({
+				info      : {
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgentMock
+			});
+			bwCall.on("connecting",userAgentMock.mockReceiveAccept);
+			bwCall.on("connected",done);
+		});
+		it ("should throw an error",function () {
+			expect(bwCall.setMicrophoneId,42).to.throw(Error);
+		});
+	});
 
 });
