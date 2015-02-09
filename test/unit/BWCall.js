@@ -280,7 +280,7 @@ describe("BWCall", function () {
 			bwCall.on("ended",done);
 			userAgentMock.session.emit("cancel");//remote hangup
 		});
-		it ("should use session.cancel instead of session.bye",function () {
+		it ("call should end",function () {
 			expect(bwCall.getInfo().status).to.equal("ended");
 		});
 	});
