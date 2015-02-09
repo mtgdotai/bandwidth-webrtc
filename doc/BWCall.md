@@ -50,9 +50,9 @@ var info = call.getInfo();
     //can be 'in' or 'out'
     direction : "out",
     
-    //state is always given. Possible states are
-    // 'connecting', 'connected' 
-    state     : "connecting",
+    //status is always given. Possible values are
+    // 'connecting', 'connected','ended'
+    status     : "connecting",
     
     //your uri (always available for SIP calls)
     localUri  : "sip:bob123@domain.com",
