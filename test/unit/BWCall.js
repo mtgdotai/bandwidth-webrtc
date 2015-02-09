@@ -259,6 +259,31 @@ describe("BWCall", function () {
 			expect(userAgentMock.session.cancel.calledOnce).to.equal(true);
 		});
 	});
+	describe ("incoming call hangs up before accept/reject",function () {
+		var userAgentMock;
+		var bwCall;
+		before(function (done) {
+			userAgentMock = new UserAgentMock();
+			sinon.spy(userAgentMock.session,"cancel");
+
+			bwCall = new BWCall({
+				info      : {
+					direction : "in",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgentMock,
+				session   : userAgentMock.session
+			});
+			bwCall.on("ended",done);
+			userAgentMock.session.emit("cancel");//remote hangup
+		});
+		it ("call should end",function () {
+			expect(bwCall.getInfo().status).to.equal("ended");
+		});
+	});
 	describe (".mute() before call connects",function () {
 		var userAgentMock;
 		var bwCall;
