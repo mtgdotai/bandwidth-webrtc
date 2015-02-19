@@ -20,7 +20,7 @@ describe("BWCall", function () {
 	before(function (done) {
 		userAgentMock = new UserAgentMock();
 		sinon.spy(userAgentMock,"invite");
-		sinon.spy(userAgentMock.session,"dtmf");
+		sinon.spy(userAgentMock.dtmfSender,"insertDTMF");
 		sinon.spy(userAgentMock.session,"bye");
 		sinon.spy(userAgentMock.session,"mute");
 		sinon.spy(userAgentMock.session,"unmute");
@@ -105,7 +105,7 @@ describe("BWCall", function () {
 	});
 	describe(".dtmf()",function () {
 		it("should call dtmf() on the session",function () {
-			expect(userAgentMock.session.dtmf.calledOnce).to.equal(true);
+			expect(userAgentMock.dtmfSender.insertDTMF.called).to.equal(true);
 		});
 		it("should throw error if tone length != 1",function () {
 			expect(invalidDtmfFunc).to.throw(Error);
