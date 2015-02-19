@@ -3,7 +3,17 @@ var EventEmitter = require("events").EventEmitter;
 function UserAgentMock(){
 	var self = this;
 
-	this.remoteStream = {};
+	self.remoteStream = {};
+	self.localStream = {};
+	self.audioTrack = {};
+	self.dtmfSender = {};
+	self.dtmfSender.insertDTMF = function () {
+
+	};
+	this.localStream.getAudioTracks = function () {
+		return [ self.audioTrack ];
+	};
+
 	this.log = {
 		level : 1
 	};
@@ -36,6 +46,16 @@ function UserAgentMock(){
 				}
 			} ]
 		}
+	};
+
+	this.session.mediaHandler = {};
+	this.session.mediaHandler.peerConnection = {};
+	this.session.mediaHandler.peerConnection.createDTMFSender = function () {
+		return self.dtmfSender;
+	};
+
+	this.session.mediaHandler.getLocalStreams = function () {
+		return [ self.localStream ];
 	};
 
 	this.register = function () {};
