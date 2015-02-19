@@ -4,6 +4,7 @@ var expect = require("chai").expect;
 var sinon = require("sinon");
 var UserAgentMock = require("../helpers/userAgentMock");
 global.URL = require("../helpers/URLMock");
+global.Audio = require("../helpers/AudioMock");
 
 describe("BWCall", function () {
 	var bwCall;
@@ -23,6 +24,8 @@ describe("BWCall", function () {
 		sinon.spy(userAgentMock.session,"bye");
 		sinon.spy(userAgentMock.session,"mute");
 		sinon.spy(userAgentMock.session,"unmute");
+		sinon.spy(global.Audio.getMockElement(),"play");
+		sinon.spy(global.Audio.getMockElement(),"pause");
 		audioElement = {
 			play : sinon.spy(),
 			src  : false
@@ -65,12 +68,23 @@ describe("BWCall", function () {
 			done();
 		});
 		bwCall.on("connecting",function () {
-			userAgentMock.mockReceiveAccept();
+			userAgentMock.session.emit("progress");
+			setTimeout(function () {//allow time for mock ringing to loop (loops every 10 ms)
+				userAgentMock.mockReceiveAccept();
+			},500);
 		});
 	});
 	describe("constructor()",function () {
 		it("calls userAgent.invite(uri, callOptions)",function () {
 			expect(userAgentMock.invite.calledOnce).to.equal(true);
+		});
+	});
+	describe("outbound call ringing",function () {
+		it("starts",function () {
+			expect(global.Audio.getMockElement().play.called).to.equal(true);
+		});
+		it("stops",function () {
+			expect(global.Audio.getMockElement().pause.called).to.equal(true);
 		});
 	});
 	describe(".setRemoteAudioElement()", function () {
