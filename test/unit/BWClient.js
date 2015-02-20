@@ -6,6 +6,7 @@ var SIP = require("sip.js");
 var BWPhone = require("../../lib/BWPhone");
 var UserAgentMock = require("../helpers/userAgentMock");
 var GetUserMediaMock = require("../helpers/getUserMediaMock");
+var AudioContextMock = require("../helpers/AudioContextMock");
 var getUserMediaMock = new GetUserMediaMock();
 var MediaStreamTrackMock = require("../helpers/mediaStreamTrackMock");
 
@@ -13,6 +14,7 @@ global.navigator = {
 	getUserMedia : getUserMediaMock.getUserMedia
 };
 global.MediaStreamTrack = new MediaStreamTrackMock();
+global.AudioContext = AudioContextMock;
 
 describe("BWClient", function () {
 	before(function () {
