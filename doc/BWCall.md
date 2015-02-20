@@ -58,13 +58,19 @@ var info = call.getInfo();
     localUri  : "sip:bob123@domain.com",
     
     //the remote uri (always available for SIP calls)
-    remoteUri : "sip:alice123@domain.com",
+    remoteUri : "sip:alice123@12.42.99.123",
     
     //a simplified version of localUri 
     localId   : "bob123",
     
     //a simplified version of remoteUri, can still be used to make calls
-    remoteId  : "alice123"
+    remoteId  : "alice123@12.42.99.123",
+    
+    //a user-friendly name for localUri
+    localName : "bob123",
+    
+    //a user-friendly name for remoteUrl, cannot be used to make a call
+    remoteName : "alice123"
 }
 ```
 
