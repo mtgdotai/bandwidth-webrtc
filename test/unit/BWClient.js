@@ -52,7 +52,7 @@ describe("BWClient", function () {
 					password : "taco123"
 				});
 
-				unregister = sinon.stub(phone, "unregister");
+				unregister = sinon.spy(phone, "unregister");
 				onBeforeUnload();
 			});
 			after(function () {
@@ -81,8 +81,8 @@ describe("BWClient", function () {
 					password : "test"
 				});
 
-				unregister1 = sinon.stub(phone1, "unregister");
-				unregister2 = sinon.stub(phone2, "unregister");
+				unregister1 = sinon.spy(phone1, "unregister");
+				unregister2 = sinon.spy(phone2, "unregister");
 				onBeforeUnload();
 			});
 			after(function () {
