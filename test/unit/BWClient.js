@@ -34,43 +34,65 @@ describe("BWClient", function () {
 		expect(global.addEventListener.calledWith("beforeunload", sinon.match.func));
 	});
 	describe("handling window unload", function () {
-		var phone;
-		var unregister;
+		var onBeforeUnload;
 		before(function () {
-			phone = global.BWClient.createPhone({
-				username : "nathan",
-				domain   : "domain.com",
-				password : "taco123"
-			});
-
-			unregister = sinon.stub(phone, "unregister");
-			global.addEventListener.firstCall.args[1]();
+			onBeforeUnload = global.addEventListener.firstCall.args[1];
 		});
 		after(function () {
 			SIP.UA.reset();
 		});
-		it("should unregister the phone",function () {
-			expect(unregister.calledOnce, "not unregistered").to.be.true;
-		});
 
-		describe("for multiple phones", function () {
+		describe("for one phone", function () {
 			var phone;
 			var unregister;
 			before(function () {
 				phone = global.BWClient.createPhone({
+					username : "nathan",
+					domain   : "domain.com",
+					password : "taco123"
+				});
+
+				unregister = sinon.stub(phone, "unregister");
+				onBeforeUnload();
+			});
+			after(function () {
+				SIP.UA.reset();
+				unregister.restore();
+			});
+			it("should unregister the phone",function () {
+				expect(unregister.calledOnce, "phone1 not unregistered").to.be.true;
+			});
+		});
+
+		describe("for multiple phones", function () {
+			var phone1;
+			var unregister1;
+			var phone2;
+			var unregister2;
+			before(function () {
+				phone1 = global.BWClient.createPhone({
+					username : "nathan",
+					domain   : "domain.com",
+					password : "taco123"
+				});
+				phone2 = global.BWClient.createPhone({
 					username : "test",
 					domain   : "test.com",
 					password : "test"
 				});
 
-				unregister = sinon.stub(phone, "unregister");
-				global.addEventListener.firstCall.args[1]();
+				unregister1 = sinon.stub(phone1, "unregister");
+				unregister2 = sinon.stub(phone2, "unregister");
+				onBeforeUnload();
 			});
 			after(function () {
 				SIP.UA.reset();
+				unregister1.restore();
+				unregister2.restore();
 			});
 			it("should unregister the phone",function () {
-				expect(unregister.calledOnce, "not unregistered").to.be.true;
+				expect(unregister1.calledOnce, "phone1 not unregistered").to.be.true;
+				expect(unregister2.calledOnce, "phone2 not unregistered").to.be.true;
 			});
 		});
 	});
