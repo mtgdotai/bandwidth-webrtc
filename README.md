@@ -16,7 +16,7 @@ Just include this at the top of your HTML page that will declare a global BWClie
 ##Quick Start
 Full docs are [here](doc/)
 
-Demo Client: [jsfiddle.net/pdwtj48y](https://jsfiddle.net/pdwtj48y/)
+[JSFIDDLE Demo Client](https://jsfiddle.net/wtcross/uk1fahor/)
 
 ###Outbound Call
 ```javascript

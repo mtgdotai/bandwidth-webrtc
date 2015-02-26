@@ -6,7 +6,6 @@ function GetUserMediaMock(){
 	var onFail = null;
 
 	self.getUserMedia = function (constraints,success,fail) {
-		console.log("constraints:",constraints);
 		onSuccess = success;
 		onFail = fail;
 	};

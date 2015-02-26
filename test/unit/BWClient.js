@@ -1,5 +1,5 @@
 "use strict";
-require("../../lib/BWClient");
+
 var expect = require("chai").expect;
 var sinon = require("sinon");
 var SIP = require("sip.js");
@@ -15,16 +15,91 @@ global.navigator = {
 global.MediaStreamTrack = new MediaStreamTrackMock();
 
 describe("BWClient", function () {
+	before(function () {
+		global.addEventListener = sinon.stub();
+		sinon.stub(SIP,"UA",function (config) {
+			return new UserAgentMock(config);
+		});
+
+		require("../../lib/BWClient");
+	});
+	after(function () {
+		SIP.UA.restore();
+	});
 	it("should declare BWClient as a global",function () {
 		expect(global.BWClient).to.not.equal(undefined);
+	});
+	it("should add a beforeunload handler", function () {
+		expect(global.addEventListener.calledOnce, "handler not added").to.be.true;
+		expect(global.addEventListener.calledWith("beforeunload", sinon.match.func));
+	});
+	describe("handling window unload", function () {
+		var onBeforeUnload;
+		before(function () {
+			onBeforeUnload = global.addEventListener.firstCall.args[1];
+		});
+		after(function () {
+			SIP.UA.reset();
+		});
+
+		describe("for one phone", function () {
+			var phone;
+			var unregister;
+			before(function () {
+				phone = global.BWClient.createPhone({
+					username : "nathan",
+					domain   : "domain.com",
+					password : "taco123"
+				});
+
+				unregister = sinon.spy(phone, "unregister");
+				onBeforeUnload();
+			});
+			after(function () {
+				SIP.UA.reset();
+				unregister.restore();
+			});
+			it("should unregister the phone",function () {
+				expect(unregister.calledOnce, "phone1 not unregistered").to.be.true;
+			});
+		});
+
+		describe("for multiple phones", function () {
+			var phone1;
+			var unregister1;
+			var phone2;
+			var unregister2;
+			before(function () {
+				phone1 = global.BWClient.createPhone({
+					username : "nathan",
+					domain   : "domain.com",
+					password : "taco123"
+				});
+				phone2 = global.BWClient.createPhone({
+					username : "test",
+					domain   : "test.com",
+					password : "test"
+				});
+
+				unregister1 = sinon.spy(phone1, "unregister");
+				unregister2 = sinon.spy(phone2, "unregister");
+				onBeforeUnload();
+			});
+			after(function () {
+				SIP.UA.reset();
+				unregister1.restore();
+				unregister2.restore();
+			});
+			it("should unregister the phone",function () {
+				expect(unregister1.calledOnce, "phone1 not unregistered").to.be.true;
+				expect(unregister2.calledOnce, "phone2 not unregistered").to.be.true;
+			});
+		});
 	});
 	describe(".createPhone()",function () {
 		var validConfig;
 		var phone;
 		before(function () {
-			sinon.stub(SIP,"UA",function (config) {
-				return new UserAgentMock(config);
-			});
 			validConfig = {
 				username : "nathan",
 				domain   : "domain.com",
@@ -33,7 +108,7 @@ describe("BWClient", function () {
 			phone = global.BWClient.createPhone(validConfig);
 		});
 		after(function () {
-			SIP.UA.restore();
+			SIP.UA.reset();
 		});
 		it("should return a BWPhone",function () {
 			expect(phone).is.an.instanceOf(BWPhone);
