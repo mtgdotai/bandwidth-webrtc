@@ -165,18 +165,15 @@ describe("BWPhone", function () {
 			}
 		});
 	}
-	// var domain = "rocket-gw.ring.to";
-	// var domain = "webrtc.bwincubator.com";
-	var domain = "nfuchs.ringto.stage.bwc-clients.com";
-	testCall("+12223334444", "sip:+12223334444@" + domain);
-	testCall("+1 222 333 4444", "sip:+12223334444@" + domain);
-	testCall("+1 (222) 333-4444", "sip:+12223334444@" + domain);
-	testCall("+1(222)-333-4444", "sip:+12223334444@" + domain);
-	testCall("(222)-333-4444", "sip:+12223334444@" + domain);
-	testCall("2223334444", "sip:+12223334444@" + domain);
-	testCall("+12223334444", "sip:+12223334444@" + domain);
+	testCall("+12223334444", "sip:+12223334444@domain.com");
+	testCall("+1 222 333 4444", "sip:+12223334444@domain.com");
+	testCall("+1 (222) 333-4444", "sip:+12223334444@domain.com");
+	testCall("+1(222)-333-4444", "sip:+12223334444@domain.com");
+	testCall("(222)-333-4444", "sip:+12223334444@domain.com");
+	testCall("2223334444", "sip:+12223334444@domain.com");
+	testCall("+12223334444", "sip:+12223334444@domain.com");
 	testCall("sip:a@b.c", "sip:a@b.c");
-	testCall("sip:test@" + domain,"sip:test@" + domain,"test");
-	testCall("test","sip:test@" + domain,"test");
+	testCall("sip:test@domain.com","sip:test@domain.com","test");
+	testCall("test","sip:test@domain.com","test");
 
 });
