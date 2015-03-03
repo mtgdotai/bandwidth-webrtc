@@ -30,7 +30,6 @@ describe("BWCall", function () {
 			play : sinon.spy(),
 			src  : false
 		};
-
 		bwCall = new BWCall(
 		{
 			info      : {
