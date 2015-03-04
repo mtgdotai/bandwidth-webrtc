@@ -62,9 +62,9 @@ function UserAgentMock(){
 	this.unregister = function () {};
 
 	this.invite = function () {
-		// setTimeout(function () {
-		// 	self.session.emit("accepted");
-		// },1);
+		setTimeout(function () {
+			self.session.emit("connecting");
+		});
 		return self.session;
 	};
 	this.mockReceiveAccept = function () {

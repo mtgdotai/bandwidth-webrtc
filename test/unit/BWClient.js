@@ -36,7 +36,7 @@ describe("BWClient", function () {
 	describe("handling window unload", function () {
 		var onBeforeUnload;
 		before(function () {
-			onBeforeUnload = global.addEventListener.firstCall.args[1];
+			onBeforeUnload = global.addEventListener.firstCall.args[ 1 ];
 		});
 		after(function () {
 			SIP.UA.reset();
