@@ -373,5 +373,35 @@ describe("BWCall", function () {
 			expect(bwCall.setMicrophoneId,42).to.throw(Error);
 		});
 	});
-
+	describe("call using callsign token",function () {
+		var bwCall;
+		var userAgent;
+		before(function (done) {
+			userAgent = new UserAgentMock();
+			bwCall = new BWCall({
+				info          :{
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent     : userAgent,
+				callsignToken : "callsignToken0123456789asdf"
+			});
+			sinon.spy(userAgent, "invite");
+			bwCall.on("ended",done);
+			bwCall.on("connecting",function () {
+				userAgent.session.emit("rejected");//simulate remote-end rejecting incoming call
+			});
+		});
+		after(function () {
+			userAgent.invite.restore();
+		});
+		it("call should end",function () {
+			expect(bwCall.getInfo().status).to.equal("ended");
+			expect(userAgent.invite.getCall(0).args[ 1 ].extraHeaders)
+				.include("X-Callsign-Token: callsignToken0123456789asdf");
+		});
+	});
 });
