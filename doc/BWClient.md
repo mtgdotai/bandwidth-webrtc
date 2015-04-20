@@ -10,6 +10,7 @@ A phone is needed to make/receive calls. Each phone is associated with a single 
 
 The configuration object contains connection parameters and other options.
 It currently only supports SIP for WebRTC signaling.
+
 ```javascript
 {
     //mandatory: SIP username to identify yourself (IMS Private Identity)
@@ -20,6 +21,9 @@ It currently only supports SIP for WebRTC signaling.
     
     //optional: password to authenticate the SIP user
     password: "taco123",
+    
+    //optional: a temporary callsign token to authenticate with instead of a password
+    callsignToken: "283ha89bva289fajf2093jf"
 }
 ```
 **Result**
@@ -53,7 +57,7 @@ A promise that will contain an array of microphone objects.
 ```javascript
 Microphone Object
 {
-	id   : "9n16xb29337fbaubc89a23bb7213n08", //a unique id
+    id   : "9n16xb29337fbaubc89a23bb7213n08", //a unique id
     name : "Super Extreme High-Definition HD microphone 9800"//a user-friendly name to identify the microphone
 }
 ```
@@ -62,10 +66,10 @@ Microphone Object
 ```javascript
 BWClient.getMicrophones()
 .then(function(microphoneArray){
-	//microphoneArray contains an array of microphone objects
+    //microphoneArray contains an array of microphone objects
 })
 .catch(function(){
-	//something went wrong...
+    //something went wrong...
 });
 
 ```
