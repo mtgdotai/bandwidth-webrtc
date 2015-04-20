@@ -167,4 +167,32 @@ describe("BWClient", function () {
 			expect(global.navigator.mozGetUserMedia.calledOnce).to.equal(true);
 		});
 	});
+	describe(".requestNotificationPermission()", function () {
+		before(function () {
+			sinon.spy(global.Notification, "requestPermission");
+			global.BWClient.requestNotificationPermission();
+		});
+		after(function () {
+			global.Notification.requestPermission.restore();
+		});
+		it("should call Notification.requestPermission", function () {
+			expect(global.Notification.requestPermission.calledOnce);
+		});
+	});
+	describe("browser does not support Notification", function () {
+		var saveNotification;
+		before(function () {
+			saveNotification = global.Notification;
+			global.Notification = undefined;
+			sinon.spy(saveNotification, "requestPermission");
+			global.BWClient.requestNotificationPermission();
+		});
+		after(function () {
+			saveNotification.requestPermission.restore();
+			global.Notification = saveNotification;
+		});
+		it("should not call Notification.requestPermission", function () {
+			expect(saveNotification.requestPermission.calledOnce).to.be.false;
+		});
+	});
 });

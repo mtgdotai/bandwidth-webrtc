@@ -6,6 +6,7 @@ var sinon = require("sinon");
 var SIP = require("sip.js");
 var UserAgentMock = require("../helpers/userAgentMock");
 var _ = require("lodash");
+global.Notification = require("../helpers/Notification");
 
 describe("BWPhone", function () {
 	var validConfig;
@@ -62,15 +63,43 @@ describe("BWPhone", function () {
 			expect(func).to.throw(Error,"domain is required");
 		});
 	});
-	describe(".on(incomingCall)",function () {
+	describe(".on(incomingCall) (denied Notification permission)",function () {
 		var bwCall;
 		before(function (done) {
 			var bwPhone = new BWPhone(validConfig);
+			global.Notification.permission = "denied";
 			bwPhone.on("incomingCall", function (call) {
 				bwCall = call;
 				done();
 			});
 			userAgentMock.emit("invite",userAgentMock.session);
+		});
+		it("emits 'incomingCall' with a bwCall object",function () {
+			expect(bwCall).is.an.instanceOf(BWCall);
+		});
+	});
+	describe(".on(incomingCall) (allowed Notification permission)",function () {
+		var bwCall;
+		var clock;
+		var notification;
+		before(function (done) {
+			clock = sinon.useFakeTimers();
+			global.Notification.permission = "granted";
+			global.focus = function () {};
+			var bwPhone = new BWPhone(validConfig);
+			bwPhone.on("notification", function (notif) {
+				notification = notif;
+				notification.onclick();
+			});
+			bwPhone.on("incomingCall", function (call) {
+				bwCall = call;
+				clock.tick(60 * 1000);
+				done();
+			});
+			userAgentMock.emit("invite",userAgentMock.session);
+		});
+		after(function () {
+			clock.restore();
 		});
 		it("emits 'incomingCall' with a bwCall object",function () {
 			expect(bwCall).is.an.instanceOf(BWCall);
