@@ -106,15 +106,38 @@ describe("BWPhone", function () {
 			expect(bwCall).is.an.instanceOf(BWCall);
 		});
 	});
-	describe(".register()",function () {
+	describe(".register() without callsign token",function () {
 		var bwPhone;
-		before(function () {
+		before(function (done) {
 			bwPhone = new BWPhone(validConfig);
 			sinon.spy(userAgentMock,"register");
 			bwPhone.register();
+			setTimeout(done, 100);
 		});
 		it("should register",function () {
 			expect(userAgentMock.register.calledOnce).to.equal(true);
+		});
+		after(function () {
+			userAgentMock.register.restore();
+		});
+	});
+	describe(".register() with callsign token",function () {
+		var bwPhone;
+		before(function (done) {
+			var config = _.cloneDeep(validConfig);
+			config.callsignToken = "callsignToken0123456789asdf";
+			bwPhone = new BWPhone(config);
+			sinon.spy(userAgentMock,"register");
+			bwPhone.register();
+			setTimeout(done, 100);
+		});
+		it("should register",function () {
+			expect(userAgentMock.register.calledOnce).to.equal(true);
+			expect(userAgentMock.register.getCall(0).args[ 0 ].extraHeaders)
+				.include("X-Callsign-Token: callsignToken0123456789asdf");
+		});
+		after(function () {
+			userAgentMock.register.restore();
 		});
 	});
 	describe(".stopIncomingCallRing()", function () {
