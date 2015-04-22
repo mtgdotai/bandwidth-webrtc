@@ -20,6 +20,7 @@ It currently only supports SIP for WebRTC signaling.
     domain: "prod.domain.com",
     
     //optional: password to authenticate the SIP user
+    //either a password or callsignToken can be used for authentication
     password: "taco123",
     
     //optional: a temporary callsign token to authenticate with instead of a password
