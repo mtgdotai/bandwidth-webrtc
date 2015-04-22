@@ -7,6 +7,7 @@ var SIP = require("sip.js");
 var UserAgentMock = require("../helpers/userAgentMock");
 var _ = require("lodash");
 global.Notification = require("../helpers/Notification");
+global.Audio = require("../helpers/AudioMock");
 
 describe("BWPhone", function () {
 	var validConfig;
@@ -114,6 +115,24 @@ describe("BWPhone", function () {
 		});
 		it("should register",function () {
 			expect(userAgentMock.register.calledOnce).to.equal(true);
+		});
+	});
+	describe(".stopIncomingCallRing()", function () {
+		var bwPhone;
+		before(function (done) {
+			bwPhone = new BWPhone(validConfig);
+			sinon.spy(global.Audio.getMockElement(),"pause");
+			bwPhone.on("incomingCall", function (call) {
+				call.reject();
+				done();
+			});
+			userAgentMock.emit("invite",userAgentMock.session);
+		});
+		it("should unregister",function () {
+			expect(global.Audio.getMockElement().pause.calledOnce);
+		});
+		after(function () {
+			global.Audio.getMockElement().pause.restore();
 		});
 	});
 	describe(".unregister()",function () {

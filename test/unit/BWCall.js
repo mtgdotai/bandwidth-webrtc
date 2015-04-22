@@ -73,6 +73,15 @@ describe("BWCall", function () {
 			},500);
 		});
 	});
+	after(function () {
+		userAgentMock.invite.restore();
+		userAgentMock.dtmfSender.insertDTMF.restore();
+		userAgentMock.session.bye.restore();
+		userAgentMock.session.mute.restore();
+		userAgentMock.session.unmute.restore();
+		global.Audio.getMockElement().play.restore();
+		global.Audio.getMockElement().pause.restore();
+	});
 	describe("constructor()",function () {
 		it("calls userAgent.invite(uri, callOptions)",function () {
 			expect(userAgentMock.invite.calledOnce).to.equal(true);
