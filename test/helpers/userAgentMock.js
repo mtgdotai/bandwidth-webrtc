@@ -7,6 +7,11 @@ function UserAgentMock(){
 	self.localStream = {};
 	self.audioTrack = {};
 	self.dtmfSender = {};
+
+	setTimeout(function () {
+		self.emit("connected");
+	}, 1);
+
 	self.dtmfSender.insertDTMF = function () {
 
 	};
