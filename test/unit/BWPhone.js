@@ -15,7 +15,8 @@ describe("BWPhone", function () {
 	before(function () {
 		validConfig = {
 			domain   : "domain.com",
-			username : "nathan"
+			username : "nathan",
+			logLevel : "error"
 		};
 		sinon.stub(SIP,"UA",function (config) {
 			userAgentMock = new UserAgentMock(config);
@@ -24,6 +25,15 @@ describe("BWPhone", function () {
 	});
 	after(function () {
 		SIP.UA.restore();
+	});
+	describe("constructor(validConfig)",function () {
+		var bwPhone;
+		before(function () {
+			bwPhone = new BWPhone(validConfig);
+		});
+		it("getTraceSip() should return false",function () {
+			expect(bwPhone.getTraceSip()).to.equal(false);
+		});
 	});
 	describe("constructor(undefined)",function () {
 		var func;
@@ -169,6 +179,18 @@ describe("BWPhone", function () {
 			expect(userAgentMock.unregister.calledOnce).to.equal(true);
 		});
 	});
+	describe(".getTraceSip(true)",function () {
+		var bwPhone;
+		before(function () {
+			var config = _.cloneDeep(validConfig);
+			config.logLevel = "debug";
+			bwPhone = new BWPhone(config);
+		});
+		it("getTraceSip() should return true",function () {
+			expect(bwPhone.getTraceSip()).to.equal(true);
+		});
+	});
+
 	function testLogLevel(level,shouldThrow){
 
 		describe ("setLogLevel(" + level + ")",function () {
