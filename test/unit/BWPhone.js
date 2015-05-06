@@ -121,8 +121,8 @@ describe("BWPhone", function () {
 		before(function (done) {
 			bwPhone = new BWPhone(validConfig);
 			sinon.spy(userAgentMock,"register");
+			bwPhone.on("registrationSuccess", done);
 			bwPhone.register();
-			setTimeout(done, 100);
 		});
 		it("should register",function () {
 			expect(userAgentMock.register.calledOnce).to.equal(true);
@@ -145,6 +145,45 @@ describe("BWPhone", function () {
 			expect(userAgentMock.register.calledOnce).to.equal(true);
 			expect(userAgentMock.register.getCall(0).args[ 0 ].extraHeaders)
 				.include("X-Callsign-Token: callsignToken0123456789asdf");
+		});
+		after(function () {
+			userAgentMock.register.restore();
+		});
+	});
+	describe(".register() trys again after 1st failure",function () {
+		var bwPhone;
+		var failed = false;
+		before(function (done) {
+			bwPhone = new BWPhone(validConfig);
+			sinon.spy(userAgentMock,"register");
+			userAgentMock.mockRegisterFail(1);
+			bwPhone.on("registrationSuccess", done);
+			bwPhone.on("registrationFailed", function () {
+				failed = true;
+			});
+			bwPhone.register();
+		});
+		it("should register",function () {
+			expect(userAgentMock.register.calledTwice).to.equal(true);
+			expect(failed);
+		});
+		after(function () {
+			userAgentMock.register.restore();
+		});
+	});
+	describe(".register() fails after 2nd failure",function () {
+		var bwPhone;
+		var failCount = 0;
+		before(function (done) {
+			bwPhone = new BWPhone(validConfig);
+			sinon.spy(userAgentMock,"register");
+			userAgentMock.mockRegisterFail(2);
+			bwPhone.on("registrationFailed", done);
+			bwPhone.register();
+		});
+		it("should register",function () {
+			expect(userAgentMock.register.calledTwice).to.equal(true);
+			expect(failCount === 2);
 		});
 		after(function () {
 			userAgentMock.register.restore();
