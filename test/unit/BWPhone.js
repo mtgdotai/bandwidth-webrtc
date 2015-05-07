@@ -165,7 +165,7 @@ describe("BWPhone", function () {
 		});
 		it("should register",function () {
 			expect(userAgentMock.register.calledTwice).to.equal(true);
-			expect(failed);
+			expect(failed).to.be.false;
 		});
 		after(function () {
 			userAgentMock.register.restore();
@@ -173,7 +173,6 @@ describe("BWPhone", function () {
 	});
 	describe(".register() fails after 2nd failure",function () {
 		var bwPhone;
-		var failCount = 0;
 		before(function (done) {
 			bwPhone = new BWPhone(validConfig);
 			sinon.spy(userAgentMock,"register");
@@ -183,7 +182,6 @@ describe("BWPhone", function () {
 		});
 		it("should register",function () {
 			expect(userAgentMock.register.calledTwice).to.equal(true);
-			expect(failCount === 2);
 		});
 		after(function () {
 			userAgentMock.register.restore();
@@ -201,7 +199,7 @@ describe("BWPhone", function () {
 			userAgentMock.emit("invite",userAgentMock.session);
 		});
 		it("should unregister",function () {
-			expect(global.Audio.getMockElement().pause.calledOnce);
+			expect(global.Audio.getMockElement().pause.calledOnce).to.be.true;
 		});
 		after(function () {
 			global.Audio.getMockElement().pause.restore();
