@@ -71,6 +71,11 @@ var logLevel = bwPhone.getLogLevel();
 ##register()
 Registers the phone to receive incoming calls.
 
+Note: You may notice while using a callsign token, when re-registration occurs
+the first registration will fail to send the callsign token, then it will be 
+repeated a 2nd time with the correct credentials. This is due to a bug in a lower
+level library being used.
+
 **Parameters**
 
 none

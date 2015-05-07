@@ -1,6 +1,7 @@
 "use strict";
 var EventEmitter = require("events").EventEmitter;
 function UserAgentMock(){
+	var registrationFailCount = 0;
 	var self = this;
 
 	self.remoteStream = {};
@@ -63,7 +64,17 @@ function UserAgentMock(){
 		return [ self.localStream ];
 	};
 
-	this.register = function () {};
+	this.register = function () {
+		setTimeout(function () {
+			if (registrationFailCount > 0){
+				self.emit("registrationFailed");
+				registrationFailCount -= 1;
+			}
+			else {
+				self.emit("registered");
+			}
+		},1);
+	};
 	this.unregister = function () {};
 
 	this.invite = function () {
@@ -74,6 +85,9 @@ function UserAgentMock(){
 	};
 	this.mockReceiveAccept = function () {
 		self.session.emit("accepted");
+	};
+	this.mockRegisterFail = function (value) {
+		registrationFailCount = value;
 	};
 }
 UserAgentMock.prototype = Object.create(EventEmitter.prototype);
