@@ -14,11 +14,17 @@ module.exports = function (grunt) {
 		defaultJsHintOptions
 	);
 
+	var targetEnv = grunt.option("target") || "prod";
 	grunt.initConfig({
 		browserify : {
 			webrtcClient : {
-				dest : "dist/BWClient.js",
-				src  : [ "lib/BWClient.js" ]
+				dest    : "dist/BWClient.js",
+				src     : [ "lib/BWClient.js" ],
+				options : {
+					alias : {
+						"./configFile.js" : "./config/" + targetEnv + ".js"
+					}
+				},
 			}
 		},
 		jscs : {
