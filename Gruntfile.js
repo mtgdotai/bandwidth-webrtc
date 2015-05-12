@@ -23,8 +23,15 @@ module.exports = function (grunt) {
 				options : {
 					alias : {
 						"./configFile.js" : "./config/" + targetEnv + ".js"
-					}
+					},
+					debug : false
 				},
+			}
+		},
+		uglify     : {
+			build : {
+				src  : "dist/BWClient.js",
+				dest : "dist/BWClient.min.js"
 			}
 		},
 		jscs : {
@@ -91,13 +98,17 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-mocha-istanbul");
+	grunt.loadNpmTasks("grunt-contrib-uglify");
 
 	// Rename tasks
 	grunt.task.renameTask("mocha_istanbul", "mochaIstanbul");
 
 	// Register tasks
 	grunt.registerTask("compile-assets", "Build compiled assets.",
-		[ "browserify" ]);
+		[
+			"browserify",
+			"uglify"
+		]);
 	grunt.registerTask("assets", "Build compiled assets and install asset dependencies.",
 		[ "compile-assets" ]);
 	grunt.registerTask("test", [ "mochaIstanbul:coverage" ]);
