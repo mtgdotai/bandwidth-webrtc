@@ -14,15 +14,34 @@ module.exports = function (grunt) {
 		defaultJsHintOptions
 	);
 
-	var targetEnv = grunt.option("target") || "prod";
 	grunt.initConfig({
 		browserify : {
-			webrtcClient : {
+			webrtcClient      : {
 				dest    : "dist/BWClient.js",
 				src     : [ "lib/BWClient.js" ],
 				options : {
 					alias : {
-						"./configFile.js" : "./config/" + targetEnv + ".js"
+						"./configFile.js" : "./config/prod.js"
+					},
+					debug : false
+				},
+			},
+			webrtcClientStage : {
+				dest    : "dist/stage/BWClient.js",
+				src     : [ "lib/BWClient.js" ],
+				options : {
+					alias : {
+						"./configFile.js" : "./config/stage.js"
+					},
+					debug : false
+				},
+			},
+			webrtcClientDev   : {
+				dest    : "dist/dev/BWClient.js",
+				src     : [ "lib/BWClient.js" ],
+				options : {
+					alias : {
+						"./configFile.js" : "./config/dev.js"
 					},
 					debug : false
 				},
@@ -30,8 +49,11 @@ module.exports = function (grunt) {
 		},
 		uglify     : {
 			build : {
-				src  : "dist/BWClient.js",
-				dest : "dist/BWClient.min.js"
+				files : {
+					"dist/BWClient.min.js"       : "dist/BWClient.js",
+					"dist/stage/BWClient.min.js" : "dist/stage/BWClient.js",
+					"dist/dev/BWClient.min.js"   : "dist/dev/BWClient.js"
+				}
 			}
 		},
 		jscs : {
