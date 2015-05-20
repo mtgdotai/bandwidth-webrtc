@@ -5,14 +5,27 @@
 ##Generating BWClient library
 ```javascript
 npm install
-grunt compile-assets
+grunt compile-assets --target=prod
 ```
 BWClient.js will be generated at "dist/BWClient.js"
 Just include this at the top of your HTML page that will declare a global BWClient object.
 
+`grunt compile-assets` will default to the `prod` target if none is given. Can be one of `prod`, `stage`, `dev`
+
 ```
 <script src="BWClient.js"></script>
 ```
+
+##Prerequisites
+
+- Register for a Catapult (Bandwidth Application Platform) account [here](https://catapult.inetwork.com)
+- Register a SIP domain
+- Create an endpoint/user
+- If you want to make calls to the PSTN (normal phones) you will need a server to handler events from Catapult
+- Make phone calls
+
+For a more in depth guide, view [this article](http://ap.bandwidth.com/docs/how-to-guides/use-endpoints-make-receive-calls-sip-clients)
+
 ##Quick Start
 Full docs are [here](doc/)
 
