@@ -3,7 +3,7 @@ BWCall is used to control inbound/outbound audio calls. See [BWPhone](BWPhone.md
 #Api
 ##setRemoteAudioElement(element)
 Sets the HTML audio element that will be used to play audio from the remote-side of the call.
-If set after the call has connected, the audio will start playing immediately. If called before, it will automatically start playing once the call has connected.
+If this is not given, an audio HTML element will be generated and used. If for some reason you do not want remote-audio, you can call `setRemoteAudioElement(null)`
 
 **Parameters**
 
