@@ -1,7 +1,7 @@
 #BWPhone
 BWPhone is bound to a single identity (phone-number), and is used to make/receive audio calls.
 ##Api
-###call(uri)
+###call(uri, options)
 Creates an outgoing call to `uri` and returns a [BWCall](BWCall.md).
 
 **Parameters**
@@ -9,6 +9,19 @@ Creates an outgoing call to `uri` and returns a [BWCall](BWCall.md).
 * `uri` (String)
 
 The destination to call. This can be either a valid phone number, or a sip uri.
+
+* `options` (Object)
+  - `identity`(String | Null | Undefined)
+  
+    An identity (P-Preferred-Identity) to use as the 'from' number. This will be converted to an E164 phone number         automatically. The backend server that receives incoming call events must also support this and create the outgoing leg with this number when the legs are bridged together to form the call. This will apprear as `preferredId` for incoming call events from Catapult, and the value will be the full SIP uri.
+
+    Example Catapult incoming call event:
+    ```
+    {
+        "preferredId":"<sip:+15202223333@yourdomain.com>"`,
+        ...
+    }
+    ```
 
 A valid phone number is in the format `+12223334444`, with optional extra spacing such as `+1 (222) 333 4444` or `222-333-4444`. (The +1 country code is optional, and is implied if not given. Numbers with a different country code are not supported).
 
