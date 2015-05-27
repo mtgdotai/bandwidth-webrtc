@@ -5,12 +5,10 @@
 ##Generating BWClient library
 ```javascript
 npm install
-grunt compile-assets --target=prod
+grunt compile-assets
 ```
 BWClient.js will be generated at "dist/BWClient.js"
 Just include this at the top of your HTML page that will declare a global BWClient object.
-
-`grunt compile-assets` will default to the `prod` target if none is given. Can be one of `prod`, `stage`, `dev`
 
 ```
 <script src="BWClient.js"></script>
