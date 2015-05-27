@@ -5,6 +5,7 @@ var sinon = require("sinon");
 var UserAgentMock = require("../helpers/userAgentMock");
 global.URL = require("../helpers/URLMock");
 global.Audio = require("../helpers/AudioMock");
+global.Notification = require("../helpers/Notification");
 
 describe("BWCall", function () {
 	var bwCall;
@@ -150,24 +151,35 @@ describe("BWCall", function () {
 		var bwCall;
 		var session;
 		before(function (done) {
+			sinon.spy(global.Notification.prototype, "close");
+
 			session = new UserAgentMock().session;
 			sinon.spy(session,"accept");
+
 			bwCall = new BWCall({
-				info    : {
+				info         : {
 					direction : "in",
 					localUri  : "localUri",
 					localId   : "localId",
 					remoteUri : "remoteUri",
-					remoteId  : "remoteId"
+					remoteId  : "remoteId",
 				},
-				session : session
+				session      : session,
+				notification : new global.Notification("title", {})
 			});
 			bwCall.accept();
 			bwCall.on("ended",done);
 			session.emit("bye");//receive hangup from remote-end
 		});
+		after(function () {
+			global.Notification.prototype.close.restore();
+			session.accept.restore();
+		});
 		it("should accept the call",function () {
 			expect(session.accept.calledOnce).to.equal(true);
+		});
+		it("should close the notification",function () {
+			expect(global.Notification.prototype.close.calledOnce).to.equal(true);
 		});
 	});
 	describe(".accept() (invalid)",function () {
