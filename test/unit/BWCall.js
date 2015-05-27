@@ -425,4 +425,38 @@ describe("BWCall", function () {
 				.include("X-Callsign-Token: callsignToken0123456789asdf");
 		});
 	});
+	describe("call using identity (P-Preferred-Identity)",function () {
+		var bwCall;
+		var userAgent;
+		before(function (done) {
+			userAgent = new UserAgentMock();
+			bwCall = new BWCall({
+				options   : {
+					identity : "919-123-4567"
+				},
+				userAgent : userAgent,
+				domain    : "domain",
+				info      :{
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				}
+			});
+			sinon.spy(userAgent, "invite");
+			bwCall.on("ended",done);
+			bwCall.on("connecting",function () {
+				userAgent.session.emit("rejected");//simulate remote-end rejecting incoming call
+			});
+		});
+		after(function () {
+			userAgent.invite.restore();
+		});
+		it("call should end",function () {
+			expect(bwCall.getInfo().status).to.equal("ended");
+			expect(userAgent.invite.getCall(0).args[ 1 ].extraHeaders)
+				.include("P-Preferred-Identity: <sip:+19191234567@domain>");
+		});
+	});
 });
