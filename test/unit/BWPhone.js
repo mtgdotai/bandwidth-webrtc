@@ -135,7 +135,7 @@ describe("BWPhone", function () {
 		var bwPhone;
 		before(function (done) {
 			var config = _.cloneDeep(validConfig);
-			config.callsignToken = "callsignToken0123456789asdf";
+			config.authToken = "callsignToken0123456789asdf";
 			bwPhone = new BWPhone(config);
 			sinon.spy(userAgentMock,"register");
 			bwPhone.register();
