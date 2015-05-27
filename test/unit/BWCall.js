@@ -400,15 +400,15 @@ describe("BWCall", function () {
 		before(function (done) {
 			userAgent = new UserAgentMock();
 			bwCall = new BWCall({
-				info          :{
+				info      :{
 					direction : "out",
 					localUri  : "localUri",
 					localId   : "localId",
 					remoteUri : "remoteUri",
 					remoteId  : "remoteId"
 				},
-				userAgent     : userAgent,
-				callsignToken : "callsignToken0123456789asdf"
+				userAgent : userAgent,
+				authToken : "callsignToken0123456789asdf"
 			});
 			sinon.spy(userAgent, "invite");
 			bwCall.on("ended",done);
