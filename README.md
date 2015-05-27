@@ -31,8 +31,6 @@ Full docs are [here](doc/)
 
 ###Outbound Call
 ```javascript
-<audio id = "audio-remote"></audio>
-...
 var bwPhone = BWClient.createPhone({
     username: "user_123",
     domain: "prod.domain.com",
@@ -40,7 +38,6 @@ var bwPhone = BWClient.createPhone({
     logLevel: "debug"//can be debug,log,warn,error (default=log)
 });
 var bwCall = bwPhone.call("222-333-4444");
-bwCall.setRemoteAudioElement(document.getElementById('audio-remote'));
 bwCall.on("connected",function(){
     //the call has connected, and audio is playing
 });
@@ -63,8 +60,6 @@ bwCall.hangup();
 ```
 ###Inbound Call
 ```javascript
-<audio id = "audio-remote"></audio>
-...
 var bwPhone = BWClient.createPhone({
     username : "user_123",
     domain   : "prod.domain.com",
@@ -80,7 +75,7 @@ bwPhone.on("incomingCall",function (bwCall) {
     
     //setup event handlers
     bwCall.on("connected",function () {
-        
+        ...
     });
     //to accept the call
     bwCall.accept();
