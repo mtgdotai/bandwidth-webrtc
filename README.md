@@ -1,6 +1,6 @@
 #Bandwidth WebRTC Client
-[![Build Status](https://magnum.travis-ci.com/inetCatapult/webrtc-client.svg?token=BQBnkCKjpv5Ls9SpJgzy&branch=master)](https://magnum.travis-ci.com/inetCatapult/webrtc-client)
-[![Coverage Status](https://coveralls.io/repos/inetCatapult/webrtc-client/badge.png?branch=master)](https://coveralls.io/r/inetCatapult/webrtc-client?branch=master)
+[![Build Status](https://travis-ci.org/bandwidthcom/bandwidth-webrtc.svg?branch=master)](https://travis-ci.org/bandwidthcom/bandwidth-webrtc)
+[![Coverage Status](https://coveralls.io/repos/bandwidthcom/bandwidth-webrtc/badge.svg)](https://coveralls.io/r/bandwidthcom/bandwidth-webrtc)
 
 ##Generating BWClient library
 ```javascript
@@ -89,5 +89,4 @@ bwPhone.on("incomingCall",function (bwCall) {
 * Chrome
 * Opera
 
-
-
+#License: [MIT](LICENSE)
