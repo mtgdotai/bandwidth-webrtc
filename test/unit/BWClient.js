@@ -131,6 +131,31 @@ describe("BWClient", function () {
 			expect(output.length).to.equal(1);
 		});
 	});
+	describe(".getMicrophones() [not supported]",function () {
+		var output;
+		var getSources;
+		before(function (done) {
+			getSources = global.MediaStreamTrack.getSources;
+			global.MediaStreamTrack.getSources = undefined;
+			global.BWClient.getMicrophones()
+			.then(function (mics) {
+				output = mics;
+				done();
+			})
+			.catch(function (err) {
+				throw err;
+			});
+		});
+		after(function () {
+			global.MediaStreamTrack.getSources = getSources;
+		});
+		it("output should contain only 'Default'",function () {
+			expect(output).to.deep.equal([ {
+				id   : null,
+				name : "Default"
+			} ]);
+		});
+	});
 	describe("webkitGetUserMedia",function () {
 		before(function (done) {
 			global.navigator.getUserMedia = null;
