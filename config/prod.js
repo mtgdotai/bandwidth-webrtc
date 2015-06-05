@@ -1,7 +1,7 @@
 module.exports = {
-	ringAudio: "https://d23gfec6haquvp.cloudfront.net/media/ring.ogg",
+	ringAudio: "https://code.bandwidth.com/media/ring.ogg",
 	wsServers: [ "wss://webrtc.registration.bandwidth.com:10443" ],
-	incomingCallIcon: "https://d23gfec6haquvp.cloudfront.net/media/call_icon.png",
-	incomingCallAudio: "https://d23gfec6haquvp.cloudfront.net/media/incoming_alert.mp3",
+	incomingCallIcon: "https://code.bandwidth.com/media/call_icon.png",
+	incomingCallAudio: "https://code.bandwidth.com/media/incoming_alert.mp3",
 	stunServers: ["stun:stun.registration.bandwidth.com"]
 };
