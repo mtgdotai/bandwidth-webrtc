@@ -4,24 +4,6 @@ node_js:
 branches:
   only:
   - master
-before_deploy: 
-  - grunt compile-assets
-  - version=$(cat package.json | jq .version)
-  - version=${version//\"}
-  - mkdir $version
-  - cp -r dist/* $version
-  - mv $version dist
-deploy:
-  provider: s3
-  access_key_id: AKIAIZ26DCA33E6U3LZQ
-  secret_access_key:
-    secure: NMBxTWrjOMUqPEk48IQoS/xozMNsLEGNq4VKo1xLOxYXbyRQy+ChVWaBmijwXUl5k99HylY4Qnu2OJIDzWYYDs0dN5L/ugZiz68pHBG64Wxnyr6nBQ2X7e/bRlaU4nahyJHMG3FV0eFbyVyOluY8rFzFDFGm9veO5IqASusTT6Q=
-  bucket: webrtc-client
-  skip_cleanup: true
-  acl: public_read
-  local_dir: ./dist
-  on:
-    branch: master
 notifications:
   hipchat:
     rooms:
