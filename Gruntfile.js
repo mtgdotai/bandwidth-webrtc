@@ -13,11 +13,17 @@ module.exports = function (grunt) {
 		grunt.file.readJSON("./test/.jshint.json"),
 		defaultJsHintOptions
 	);
+	var version = require("./package.json").version;
+
+	var uglifyFiles = {};
+	uglifyFiles["dist/bandwidth-" + version + ".min.js"]       = "dist/bandwidth-" + version + ".js";
+	uglifyFiles["dist/bandwidth-dev-" + version + ".min.js"]   = "dist/bandwidth-dev-" + version + ".js";
+	uglifyFiles["dist/bandwidth-stage-" + version + ".min.js"] = "dist/bandwidth-stage-" + version + ".js";
 
 	grunt.initConfig({
 		browserify : {
 			webrtcClient      : {
-				dest    : "dist/BWClient.js",
+				dest    : "dist/bandwidth-" + version + ".js",
 				src     : [ "lib/BWClient.js" ],
 				options : {
 					alias : {
@@ -27,7 +33,7 @@ module.exports = function (grunt) {
 				},
 			},
 			webrtcClientStage : {
-				dest    : "dist/stage/BWClient.js",
+				dest    : "dist/bandwidth-stage-" + version + ".js",
 				src     : [ "lib/BWClient.js" ],
 				options : {
 					alias : {
@@ -37,7 +43,7 @@ module.exports = function (grunt) {
 				},
 			},
 			webrtcClientDev   : {
-				dest    : "dist/dev/BWClient.js",
+				dest    : "dist/bandwidth-dev-" + version + ".js",
 				src     : [ "lib/BWClient.js" ],
 				options : {
 					alias : {
@@ -49,11 +55,7 @@ module.exports = function (grunt) {
 		},
 		uglify     : {
 			build : {
-				files : {
-					"dist/BWClient.min.js"       : "dist/BWClient.js",
-					"dist/stage/BWClient.min.js" : "dist/stage/BWClient.js",
-					"dist/dev/BWClient.min.js"   : "dist/dev/BWClient.js"
-				}
+				files : uglifyFiles
 			}
 		},
 		jscs : {
