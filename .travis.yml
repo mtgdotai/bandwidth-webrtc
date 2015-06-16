@@ -3,31 +3,30 @@ node_js:
 - '0.10'
 
 deploy:
-	provider: npm
-	email: fuchsnj@gmail.com
-	api_key:
-		secure: hyrIHghiDDgumABw4vGR9M1LikEcCT79p8+flXMAkFRJ6dc/OiKq2f1QSmDys8dYuS87rQ4r5fRvwuyPXq51OKH8pjHZqz2XxTUUWZEXss03HWxyPD+1pmJvgh1IqH8EzQKEjzD+INSrgBPVhwUa04QR7tPNWt0kBReHlP9YlRW5UKvLema8z7sxITRoIRmPByq7ri+R1ixrvf5d4WPxdG7mHKkagQQ37w4gi2uXH78OOtdXp61fdDGcOsEyaR07fftctTMdMsXUe2UEDbnX93kvX3995aRo/71EvacqxVYMgiCxm0O7EKVvjHWClMDs1mY3afVosbxybOwBF/LiYidmXlZJ37mzgFWNxPU5s9ZvlBDJ22FhQQMZxcjeZ4ER49rH1jKb9pEXI6BbIb8oeKoecL+jXxvOAYw3LW13eIFP88JzlmLQkBkiIM4FJAAKqOnNCrOFV+z5RHWQB5e90NSAS9hpjmrf/UX21bhAlhDytjrp9zE7f45MDnooPM18BfbdKI6pflKe6ZLUSKxg9woY1RXYPWNxjGf3SdTVuPlToOnSKS3X81fXNkhA6o6n5cVIESC3sWRJRo+CMNaXU7TPR8gLTuP3ZV5O9gwBbK/KbpvaoE+EZOkYdpGf2RZHQ3ovJr0/bXTegyoqGfU3Un1bqckCHmhDNQYDk+HNQq8=
-	on:
-		tags: true
+  - provider: npm
+    email: fuchsnj@gmail.com
+    api_key:
+      secure: hyrIHghiDDgumABw4vGR9M1LikEcCT79p8+flXMAkFRJ6dc/OiKq2f1QSmDys8dYuS87rQ4r5fRvwuyPXq51OKH8pjHZqz2XxTUUWZEXss03HWxyPD+1pmJvgh1IqH8EzQKEjzD+INSrgBPVhwUa04QR7tPNWt0kBReHlP9YlRW5UKvLema8z7sxITRoIRmPByq7ri+R1ixrvf5d4WPxdG7mHKkagQQ37w4gi2uXH78OOtdXp61fdDGcOsEyaR07fftctTMdMsXUe2UEDbnX93kvX3995aRo/71EvacqxVYMgiCxm0O7EKVvjHWClMDs1mY3afVosbxybOwBF/LiYidmXlZJ37mzgFWNxPU5s9ZvlBDJ22FhQQMZxcjeZ4ER49rH1jKb9pEXI6BbIb8oeKoecL+jXxvOAYw3LW13eIFP88JzlmLQkBkiIM4FJAAKqOnNCrOFV+z5RHWQB5e90NSAS9hpjmrf/UX21bhAlhDytjrp9zE7f45MDnooPM18BfbdKI6pflKe6ZLUSKxg9woY1RXYPWNxjGf3SdTVuPlToOnSKS3X81fXNkhA6o6n5cVIESC3sWRJRo+CMNaXU7TPR8gLTuP3ZV5O9gwBbK/KbpvaoE+EZOkYdpGf2RZHQ3ovJr0/bXTegyoqGfU3Un1bqckCHmhDNQYDk+HNQq8=
+    on:
+      tags: true
 
-deploy:
-	provider: s3
-	access_key_id: 
-	secret_access_key: AKIAISUZMFWXJPMP6P5Q
-    	secure: acthDbGIsVdcFULh4l8eHIAWoZqV1Dc2ktVoDUiE2KflkTwsbjV+ms3s7aFY7F2quSMhbdwNrMbQJgWRYeSjd4/cxSVc0OklSAh4KFFKMrd7H1Y9DaXef9LL0xlqb4Ga28u8e4LLNbb1H7KGv7pXGlQdA26cnULEoWiagvamwA9+qurD16GgAy0W3jJ6Bel0p8mV535NuVm7rkTFPUAoRPpNwrL9wYgpCWtyTdyMDO9VpYVlrb57FCMiHlfUMYmf/yKeYI40Lg8I5Zzy27gJoOj8NftsVk+aePR8RntGJSy+T5k9bRiIkuJXuo+uTKbLrAP0YFHGaxRE34HxP0Lp+GJHLG1QdD+1wqtEC/HY47TzUztA389LBOlqyTggwNnorVhlyg/v4RjI3i44Odb4elE70SQYrzfYlHL4iWk3W7CnHMX6KkFxyZVLSaHPpAjDJRyuvrPawNZTLxius971dGS4y7pFx7y7kROomgxTXcSdMUrHuekTiqvkBAdqIpaXltti/arF1ef21tckw8SQsum0ONZR9BeYKZo8RIbmne09Cc2RvpZdQHmUL2xbsHuk5iUPlPw189U4A1eT0ZfpLqW5XfYa9znrdYE6T82Kq5HGIwhBW3HnRMWZ05iS9Y1zbYeHpFK/fPl31H6F6vcZ+l8sjZmWR09yqjX7hXdjpps=
-	bucket: bandwidth-javascript
-	skip_cleanup: true
-	acl: public_read
-	local_dir: ./dist/*
-	on:
-		tags: true
+  - provider: s3
+    access_key_id: AKIAISUZMFWXJPMP6P5Q
+    secret_access_key: 
+      secure: acthDbGIsVdcFULh4l8eHIAWoZqV1Dc2ktVoDUiE2KflkTwsbjV+ms3s7aFY7F2quSMhbdwNrMbQJgWRYeSjd4/cxSVc0OklSAh4KFFKMrd7H1Y9DaXef9LL0xlqb4Ga28u8e4LLNbb1H7KGv7pXGlQdA26cnULEoWiagvamwA9+qurD16GgAy0W3jJ6Bel0p8mV535NuVm7rkTFPUAoRPpNwrL9wYgpCWtyTdyMDO9VpYVlrb57FCMiHlfUMYmf/yKeYI40Lg8I5Zzy27gJoOj8NftsVk+aePR8RntGJSy+T5k9bRiIkuJXuo+uTKbLrAP0YFHGaxRE34HxP0Lp+GJHLG1QdD+1wqtEC/HY47TzUztA389LBOlqyTggwNnorVhlyg/v4RjI3i44Odb4elE70SQYrzfYlHL4iWk3W7CnHMX6KkFxyZVLSaHPpAjDJRyuvrPawNZTLxius971dGS4y7pFx7y7kROomgxTXcSdMUrHuekTiqvkBAdqIpaXltti/arF1ef21tckw8SQsum0ONZR9BeYKZo8RIbmne09Cc2RvpZdQHmUL2xbsHuk5iUPlPw189U4A1eT0ZfpLqW5XfYa9znrdYE6T82Kq5HGIwhBW3HnRMWZ05iS9Y1zbYeHpFK/fPl31H6F6vcZ+l8sjZmWR09yqjX7hXdjpps=
+    bucket: bandwidth-javascript
+    skip_cleanup: true
+    acl: public_read
+    local_dir: ./dist/*
+    on:
+      tags: true
 
 notifications:
-	hipchat:
-	rooms:
-	- 1ac30153f58fc1a1f21b241f59919f@1040022
-	template:
-	- ! '%{repository}#%{build_number} (%{branch} - %{commit_message} : %{author}):
-	%{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change
-		view</a>)'
-	format: html
+  hipchat:
+  rooms:
+  - 1ac30153f58fc1a1f21b241f59919f@1040022
+  template:
+  - ! '%{repository}#%{build_number} (%{branch} - %{commit_message} : %{author}):
+  %{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change
+    view</a>)'
+  format: html
