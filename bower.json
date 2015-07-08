@@ -1,0 +1,22 @@
+{
+  "name": "bandwidth-webrtc",
+  "version": "0.9.1",
+  "homepage": "https://github.com/bandwidthcom/bandwidth-webrtc",
+  "authors": [
+    "Nathan Fuchs <fuchsnj@gmail.com>"
+  ],
+  "description": "Bandwidth WebRTC client",
+  "main": "lib/BWClient.js",
+  "keywords": [
+    "webrtc",
+    "bandwidth"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
