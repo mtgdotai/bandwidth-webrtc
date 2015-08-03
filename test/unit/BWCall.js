@@ -147,6 +147,38 @@ describe("BWCall", function () {
 			expect(userAgentMock.session.unmute.calledOnce).to.equal(true);
 		});
 	});
+	describe(".dtmf() (without createDTMFSender)",function () {
+		var bwCall;
+		var userAgent;
+		before(function (done) {
+			userAgent = new UserAgentMock();
+			sinon.spy(userAgent.dtmfSender,"insertDTMF");
+			userAgent.session.mediaHandler.peerConnection.createDTMFSender = undefined;
+			bwCall = new BWCall({
+				info      :{
+					direction : "out",
+					localUri  : "localUri",
+					localId   : "localId",
+					remoteUri : "remoteUri",
+					remoteId  : "remoteId"
+				},
+				userAgent : userAgent
+			});
+			bwCall.on("connected",function () {
+				bwCall.sendDtmf("1");
+				done();
+			});
+			bwCall.on("connecting",function () {
+				userAgent.mockReceiveAccept();
+			});
+		});
+		after(function () {
+			userAgent.dtmfSender.insertDTMF.restore();
+		});
+		it("should not send dtmf",function () {
+			expect(userAgent.dtmfSender.insertDTMF.called).to.equal(false);
+		});
+	});
 	describe(".accept() (valid)",function () {
 		var bwCall;
 		var session;
