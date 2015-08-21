@@ -32,6 +32,6 @@
     "joi": "^5.0.2",
     "lodash": "^2.4.1",
     "native-promise-only": "^0.7.6-a",
-    "sip.js": "^0.6.4"
+    "sip.js": "^0.7.1"
   }
 }
