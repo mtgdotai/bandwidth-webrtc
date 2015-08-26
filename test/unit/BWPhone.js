@@ -150,38 +150,19 @@ describe("BWPhone", function () {
 			userAgentMock.register.restore();
 		});
 	});
-	describe(".register() trys again after 1st failure",function () {
+	describe(".register() emits registrationFailed after failure",function () {
 		var bwPhone;
-		var failed = false;
 		before(function (done) {
 			bwPhone = new BWPhone(validConfig);
 			sinon.spy(userAgentMock,"register");
 			userAgentMock.mockRegisterFail(1);
-			bwPhone.on("registrationSuccess", done);
 			bwPhone.on("registrationFailed", function () {
-				failed = true;
+				done();
 			});
 			bwPhone.register();
 		});
 		it("should register",function () {
-			expect(userAgentMock.register.calledTwice).to.equal(true);
-			expect(failed).to.be.false;
-		});
-		after(function () {
-			userAgentMock.register.restore();
-		});
-	});
-	describe(".register() fails after 2nd failure",function () {
-		var bwPhone;
-		before(function (done) {
-			bwPhone = new BWPhone(validConfig);
-			sinon.spy(userAgentMock,"register");
-			userAgentMock.mockRegisterFail(2);
-			bwPhone.on("registrationFailed", done);
-			bwPhone.register();
-		});
-		it("should register",function () {
-			expect(userAgentMock.register.calledTwice).to.equal(true);
+			expect(userAgentMock.register.calledOnce).to.equal(true);
 		});
 		after(function () {
 			userAgentMock.register.restore();
