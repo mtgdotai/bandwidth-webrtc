@@ -1,6 +1,6 @@
 {
   "name": "bandwidth-webrtc",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Bandwidth WebRTC client",
   "repository": {
     "type": "git",
