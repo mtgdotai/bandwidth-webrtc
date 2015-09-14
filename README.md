@@ -27,7 +27,9 @@ For a more in depth guide, view [this article](http://ap.bandwidth.com/docs/how-
 ##Quick Start
 Full docs are [here](doc/)
 
-[JSFIDDLE Demo Client](https://jsfiddle.net/fuchsnj/5e38j33x/)
+CDN hosted library: [minified](https://code.bandwidth.com/bandwidth-0.9.3.min.js) [not-minified](https://code.bandwidth.com/bandwidth-0.9.3.js)
+
+[JSFIDDLE Demo Client](https://jsfiddle.net/676x6p4a/)
 
 ###Outbound Call
 ```javascript
