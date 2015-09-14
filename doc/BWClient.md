@@ -74,3 +74,17 @@ BWClient.getMicrophones()
 });
 
 ```
+###getUserMedia
+By default, the browser will ask for permission to use media right when you need it. You can call this method to request the permission whenever it is appropriate in your app, and if it is running over HTTPS, this setting will be remembered. Once media permission is accepted, any further media request will be fufilled immediately without user intervention.
+
+**Example**
+```
+//media permission is 'pending' here
+BWClient.getUserMedia()
+.then(function () {
+    //accepted
+})
+.catch(function () {
+    //rejected
+})
+```
