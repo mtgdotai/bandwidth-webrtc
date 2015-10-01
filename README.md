@@ -29,7 +29,7 @@ Full docs are [here](doc/)
 
 CDN hosted library: [minified](https://code.bandwidth.com/bandwidth-0.9.4.min.js) [not-minified](https://code.bandwidth.com/bandwidth-0.9.4.js)
 
-[JSFIDDLE Demo Client](https://jsfiddle.net/1w6r8pfj/)
+[JSFIDDLE Demo Client](https://jsfiddle.net/vLg9baqg/)
 
 ###Outbound Call
 ```javascript
