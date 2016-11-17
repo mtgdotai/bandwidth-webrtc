@@ -16,7 +16,10 @@ describe("BWPhone", function () {
 		validConfig = {
 			domain   : "domain.com",
 			username : "nathan",
-			logLevel : "error"
+			logLevel : "error",
+			extraHeaders: [
+				"X-User-Auth: test-token"
+			]
 		};
 		sinon.stub(SIP,"UA",function (config) {
 			userAgentMock = new UserAgentMock(config);
