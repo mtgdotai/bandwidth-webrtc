@@ -104,6 +104,11 @@ describe("BWCall", function () {
 			expect(audioElement.play.calledOnce).to.equal(true);
 		});
 	});
+	describe('.getRemoteStream()', function() {
+		it('return the correct url', function() {
+			expect(bwCall.getRemoteStream()).to.equal(userAgentMock.remoteStream);
+		});
+	})
 	describe(".getInfo().status", function () {
 		it("is 'connecting' before call is connected",function () {
 			expect(beforeConnectedInfo.status).to.equal("connecting");
